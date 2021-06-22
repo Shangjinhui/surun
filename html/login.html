@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="login">
+		<div class="w-980 auto f-cb pt-15 pb-12">
+			<a href="index.html"><img src="static/img/logo.png" alt="" class="fl "></a>
+			<div class="f-24 c-999 fl h-76 lh-76 ml-30">欢迎登录</div>
+		</div>
+		<div class="por">
+			<div class="banner por f-over min-1200 w-100b">
+				<!-- Swiper -->
+			    <div class="swiper-container h-560">
+			        <div class="swiper-wrapper">
+			            <div class="swiper-slide h-560" style="background:url(static/img/center-img35.jpg) center no-repeat"></div>
+			            <div class="swiper-slide h-560" style="background:url(static/img/center-img36.jpg) center no-repeat"></div>
+			            <div class="swiper-slide h-560" style="background:url(static/img/center-img35.jpg) center no-repeat"></div>
+			        </div>
+			        <!-- Add Pagination -->
+			        <div class="swiper-pagination"></div>
+			    </div>
+			    <div class="w-347 h-396 bg-fff abs r-50b index-10 mr--445 t-57" v-if="sub==1||sub==2">
+			    	<div class="center f-cb pt-30 pb-20 bor-b-f2f4f6 f-18 c-333 l-h15">
+			    		<span class="inline-block mr-90 pointer" :class="sub==1?'c-e42008':''" @click="switchFun(1)">扫码登录</span>
+			    		<span class="inline-block pointer" :class="sub==2?'c-e42008':''" @click="switchFun(2)">账号登录</span>
+			    	</div>
+			    	<div v-if="sub==1">
+			    		<div class="w-185 h-185 auto bor-f1f3f5 mb-15 mt-20">
+			    			<img :src="appImg" alt="" class="w-100b">
+			    		</div>
+			    		<div class="f-12 c-999 l-h14 center">打开苏润易购APP 扫描二维码</div>
+			    	</div>
+			    	<div v-else>
+				    	<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-27">
+				    		<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:url(static/img/center-img22.png) 3px -126px no-repeat"></div>
+				    		<div class="w-254 fr el-input">
+								<input type="text" class="pd15 w100"  v-model="phone" placeholder="请输入手机号码" @keyup.enter="login">
+				    		</div>
+				    	</div>
+				    	<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+				    		<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:url(static/img/center-img22.png) -37px -130px no-repeat"></div>
+							<div class="w-254 fr el-input">
+								<input type="password"  class="pd15 w100" v-model="password" placeholder="请输入密码" @keyup.enter="login">
+							</div>
+				    	</div>
+				    	<div class="f-cb checkbox pl-28 mt-15 mb-20 l-h12">
+							<template>
+							  <el-checkbox v-model="checked" class="f-12">记住用户名</el-checkbox>
+							</template>
+							<div @click="sub=3" class="fr mr-27 cursor">忘记密码</div>
+						</div>
+						<div class="f-14 c-fff center bg-e42008 w-292 h-40 lh-40 auto cursor" @click="login">立即登录</div>
+					</div>
+			    	<div class="center f-12 c-999 mt-10 mb-15" :class="sub==2?'mt-15 mb-25':''">没有账号？<a href="register.html" class="c-2288ee">去注册</a></div>
+			    	<div class="center">
+						<a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx086e0559a422c0e1&redirect_uri=http%3A%2F%2Fmysurun.com%2Flogin.html&response_type=code&scope=snsapi_login" class="inline-block pl-20 lh-20 h-20" style="background:url(static/img/center-img22.png) -37px -57px no-repeat">微信</a><span class="w-1 inline-block ml-13 por mr-13 t-3 h-16 bg-dbdbdb mt-2"></span>
+			    		<a href="" class="inline-block pl-20 lh-20 h-20" style="background:url(static/img/center-img22.png) -37px -84px no-repeat">QQ</a><span class="w-1 inline-block ml-13 por mr-13 t-3 h-16 bg-dbdbdb"></span>
+			    		<a href="" class="inline-block pl-20 lh-20 h-20" style="background:url(static/img/center-img22.png) -37px -109px no-repeat">微博</a>
+			    	</div>
+			    </div>
+
+				<!--忘记密码-->
+				<div class="w-347  bg-fff abs r-50b index-10 mr--445 t-57 pb30" v-if="sub==3">
+					<div class=" f-cb pt-30 pb-20 bor-b-f2f4f6 f-18 c-333 l-h15 bold pl-20">
+						忘记密码
+					</div>
+
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) 3px -126px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="text" placeholder="请输入手机号码" class="h-36 pd15 w100" v-model="phone">
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -36px -158px no-repeat"></div>
+						<div class="w-254 fr el-input fsize12">
+							<input type="text" placeholder="请输入验证码" class="h-36 pd15 fl wid150 bor-r-e1e3e5" v-model="smsCode">
+							<div class="fr w-100 center lh36 cursor coe42008" id="code" @click="sendSms">获取验证码</div>
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -37px -130px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="password" placeholder="请输入密码" class="h-36 pd15 w100" v-model="password">
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -37px -130px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="password" placeholder="请再次确认输入密码" class="h-36 pd15 w100" v-model="qwdpassword">
+						</div>
+					</div>
+
+					<div class="mt-10 w-292 auto">
+						<div class="f-14 c-fff center bg-e42008  h-40 lh-40 mt-20 cursor" @click="findPwd">立即找回</div>
+						<div class="center f-12 c-999 mt-20 ">已有账号？<span @click="sub=2" class="c-2288ee cursor">注册登录</span></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/login_footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a href="index.html"  target="_blank" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">我的订单</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-35 f-14 c-666 por bor-b-f1f3f5 mb-35 c-666">
+					<div class="fl mr-50 por tit pointer" :class="orderType =='' ? 'on':''" @click="changeType()">所有订单</div>
+					<div class="fl mr-50 por tit pointer" :class="orderType =='0' ? 'on':''" @click="changeType('0')">待付款 <span v-if="info.noPayNumber>0">(<i class="c-e42008">{{info.noPayNumber}}</i>)</span></div>
+					<div class="fl mr-50 por tit pointer" :class="orderType ==2 ? 'on':''" @click="changeType(2)">待发货 <span v-if="info.noShipNumber>0">(<i class="c-e42008">{{info.noShipNumber}}</i>)</span></div>
+					<div class="fl mr-50 por tit pointer" :class="orderType ==3 ? 'on':''" @click="changeType(3)">待收货 <span v-if="info.noReceiveNumber>0">(<i class="c-e42008">{{info.noReceiveNumber}}</i>)</span></div>
+					<div class="fl mr-50 por tit pointer" :class="orderType ==4 ? 'on':''" @click="changeType(4)">待评价 <span v-if="info.noEvaluateNumber>0">(<i class="c-e42008">{{info.noEvaluateNumber}}</i>)</span></div>
+					<div class="fl por tit pointer" :class="orderType ==5 ? 'on':''" @click="changeType(5)">售后订单</div>
+					<div class="fr w-238 h-27 lh-25 bor-a6a6a6 bg-a6a6a6 mt-17 mr-25" v-if="orderType !=5">
+						<input type="text" class="fl w-205 h-25  f-12 bg-fff block pl-12" v-model="searchTitle" placeholder="请输入商品标题或订单号" @keyup.enter="pageNo=1;getList();">
+						<div class="fr w-29 h-25 pointer" style="background:url(static/img/center-img4.png) center/14px no-repeat" @click="pageNo=1;getList();"></div>
+					</div>
+				</div>
+				<div class="pl-20 pr-20">
+					<div v-if="orderType!=5" class="f-cb bg-fcfcfd h-38 lh-36 bor-dbdbdb center f-12 c-333">
+						<div class="fl pl-12 w-185 left dropdown rel">
+							<span class="el-dropdown-link"  >
+							    时间筛选<i class="el-icon-arrow-down el-icon--right"></i>
+							</span>
+							<div class="w100 abs opa0 top-0 left-0">
+								<el-select v-model="orderTime" placeholder="请选择">
+									<el-option v-for="item in timeList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="fl w-150 left">宝贝</div>
+						<div class="fl w-90">单价</div>
+						<div class="fl w-45">数量</div>
+						<div class="fl w-85">商品操作</div>
+						<div class="fl w-55">收货人</div>
+						<div class="fl w-110">支付总额</div>
+						<div class="fl w-80 dropdown rel" v-if="orderType==''">
+							<span class="el-dropdown-link"  >
+							    订单状态<i class="el-icon-arrow-down el-icon--right"></i>
+							</span>
+							<div class="w100 abs opa0 top-0 left-0">
+								<el-select v-model="status" placeholder="请选择">
+									<el-option v-for="item in statusList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+								</el-select>
+							</div>
+						</div>
+						<div class="fl w-80 dropdown rel" v-else>
+							订单状态
+						</div>
+						<div class="fl w-110">交易操作</div>
+					</div>
+					<!--<div class="f-cb pl-12 checkbox mt-15 mb-15">
+						<template class="fl">
+							<el-checkbox  class="check-font" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
+						</template>
+					</div>-->
+					<div class="f-cb mt-15" v-if="total>0">
+						<!--普通订单-->
+						<div v-if="orderType!=5">
+							<div class="f-cb mb-8" v-for="item in list" >
+								<div class="f-cb  center f-12 c-666 l-h15">
+									<table class="tables top bg-fff  bor-e1e3e5">
+										<tr class="bor-b-e1e3e5">
+											<td colspan="9">
+												<div class="f-cb h-36 lh-36 bg-fcfcfd pl-12 pr-10 f-12 c-666">
+													<!--<div class="fl mr-20 checkbox cheack-lable-none">
+														<template>
+															<el-checkbox-group class="h-36" v-model="checkList" @change="handleCheckedCitiesChange">
+																<el-checkbox :label="item" :key="item"></el-checkbox>
+															</el-checkbox-group>
+														  </template>
+													</div>-->
+													<div class="fl mr-35">
+														订单号：{{item.orderNo}}
+													</div>
+													<div class="fl mr-35">
+														下单时间：{{item.createTime}}
+													</div>
+													<a :href="'store.html?company='+item.companyId" class="fl  mr-5">店铺：{{item.companyName}}</a>
+													<div @click="goService(item.customerServiceId)" class="fl  w-16 h-16 mt-10 cursor" style="background:url(static/img/center-img22.png) -110px -4px no-repeat"></div>
+													<div v-if="item.status==-1||item.status==0||item.status==4" @click="delInfo(item.id)" class="fr cursor w-16 h-16 mt-10" style="background:url(static/img/center-img22.png) -58px -4px no-repeat"></div>
+													<!--<div class="fr pl-15" style="background:url(static/img/center-img22.png) -187px -107px no-repeat">自动取消：还剩<span class="c-e42008">59</span>分<span class="c-e42008">29</span>秒</div>-->
+												</div>
+											</td>
+										</tr>
+										<tr class="bor-b-e1e3e5" v-for="(it,idx) in item.goodsList">
+											<td class="w-80 pt-20 pb-25 pl-10 pr-10">
+												<a target="_blank" :href="'store_pro.html?id='+it.goodsId+'&company='+item.companyId" class="fl w-80 h-80 bor-e1e3e5" :style="'background:url('+it.thumb+') center/cover no-repeat'"></a>
+											</td>
+											<td class="w-255 pt-20 pb-25 left pl-25">
+												<a target="_blank" :href="'store_pro.html?id='+it.goodsId+'&company='+item.companyId">
+												<div class="mb-3">{{it.goodsName}}</div>
+												<div class="c-999">{{it.goodsAttr}}</div>
+												<div class="c-999" v-if="it.orderAttribute"><span v-for="itattr in it.orderAttribute" class="mr10">{{itattr.goodsAttribute}}:{{itattr.totalValue}}{{itattr.group}}</span></div>
+												</a>
+											</td>
+											<td class="w-90 pt-20 pb-25 c-333">
+												<div>￥{{it.price}}</div>
+											</td>
+											<td class="w-45 pt-20 pb-25 c-333">
+												<div>{{it.quantity}}</div>
+											</td>
+											<td class="w-85 pt-20 pb-25 l-h17 bor-r-e1e3e5">
+												<div v-if="it.canRefund==1&&(it.refundStatus==0||it.refundStatus==-1)">
+													<a target="_blank" :href="'o_refund.html?type=1&ctype=1&id='+it.orderDetailId" class="hovere42008" v-if="item.status==2">退货/退款</a>
+													<a target="_blank" :href="'o_repel.html?ctype=1&id='+it.orderDetailId" class="hovere42008" v-else>退货/退款</a>
+
+												</div>
+												<div><a target="_blank" :href="'o_complaints.html?id='+it.orderDetailId" class="hovere42008">{{it.isComplaint==0?'投诉商家':'查看投诉'}}</a></div>
+												<div v-if="it.refundStatus>=1" class="cursor hovere42008" @click="goReturn(it)">售后详情</div>
+											</td>
+											<td class="w-55 pt-20 pb-25 bor-r-e1e3e5" :rowspan="item.goodsList.length" v-if="idx==0">
+												<div>{{item.contact}}</div>
+											</td>
+											<td class="w-110 pt-20 pb-25 bor-r-e1e3e5" :rowspan="item.goodsList.length" v-if="idx==0">
+												<div class="c-333">￥{{item.payFee}}</div>
+												<div class="c-999">含运费：¥{{item.shipFee}}</div>
+											</td>
+											<td class="w-80 pt-20 pb-25 l-h17 bor-r-e1e3e5" :rowspan="item.goodsList.length" v-if="idx==0">
+												<div v-if="item.status==-1">已取消</div>
+												<div v-if="item.status==0">待付款</div>
+												<div v-if="item.status==1">拼团中</div>
+												<div v-if="item.status==2">待发货</div>
+												<div v-if="item.status==3">待收货</div>
+												<div v-if="item.status==4">已完成</div>
+												<div><a target="_blank" :href="'c_order_info.html?id='+item.id" class="hovere42008">查看详情</a></div>
+												<div v-if="item.status>=3"><a target="_blank" :href="'o_logistics.html?ctype=1&id='+item.id" class="hovere42008">查看物流</a></div>
+											</td>
+											<td class="w-110 pt-20 pb-25 bor-r-e1e3e5" :rowspan="item.goodsList.length" v-if="idx==0">
+												<div v-if="item.status==0"><a target="_blank" :href="'store_pay.html?orderId='+item.id" class="inline-block w-80 h-30 lh-30 center bg-e42008 mb-5 c-fff">付款</a></div>
+												<div v-if="item.status==2"><div  @click="remindInfo(item.id)" class="inline-block cursor w-80 h-30 lh-30 center bg-e42008 mb-5 c-fff">提醒发货</div></div>
+												<div v-if="item.status==3"><div @click="confirmInfo(item.id)" class="inline-block cursor w-80 h-30 lh-30 center bg-e42008 mb-5 c-fff">确认收货</div></div>
+
+												<!--<div v-if="item.status==1"><a href="" class="inline-block w-80 h-30 lh-30 center bg-e42008 mb-5 c-fff">邀请拼单</a></div> -->
+												<div v-if="item.status==4&&item.evaluateStatus!=2"><a target="_blank" :href="'c_evaluation.html?id='+item.id" class="inline-block w-80 h-30 lh-30 center bg-e42008 mb-5 c-fff">立即评价</a></div>
+												<div class="c-333" v-if="item.status==0"><div @click="cancelInfo(item.id)" class="cursor hovere42008">取消订单</div></div>
+												<div class="c-333" v-if="item.status==4"><a target="_blank" :href="'store_pro.html?id='+it.goodsId+'&company='+item.companyId" class="hovere42008">再次购买</a></div>
+
+												<!-- <div class="c-333"><a href="">再次购买</a></div> -->
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<!--售后订单-->
+						<div v-if="orderType==5">
+							<div class="f-cb bg-fcfcfd h-38 lh-36 bor-dbdbdb center f-12 c-333 mb10">
+								<div class="fl w-400 left pl20">宝贝</div>
+								<div class="fl w-85">退款金额</div>
+								<div class="fl wid150">申请时间</div>
+								<div class="fl w-80">服务类型</div>
+								<div class="fl w-80">退款状态</div>
+								<div class="fl w-110">交易操作</div>
+							</div>
+							<div class="f-cb mb-8" v-for="item in list" >
+								<div class="f-cb  center f-12 c-666 l-h15">
+									<table class="tables top bg-fff  bor-e1e3e5">
+										<tr class="bor-b-e1e3e5">
+											<td colspan="9">
+												<div class="f-cb h-36 lh-36 bg-fcfcfd pl-12 pr-10 f-12 c-666">
+													<!--<div class="fl mr-20 checkbox cheack-lable-none">
+														<template>
+															<el-checkbox-group class="h-36" v-model="checkList" @change="handleCheckedCitiesChange">
+																<el-checkbox :label="item" :key="item"></el-checkbox>
+															</el-checkbox-group>
+														  </template>
+													</div>-->
+													<div class="fl mr-35">
+														订单号：{{item.orderNo}}
+													</div>
+													<div class="fl mr-35">
+														退款编号：{{item.refundNo}}
+													</div>
+													<a target="_blank" :href="'store.html?company='+item.companyId" class="fl  mr-5">店铺：{{item.companyName}}</a>
+													<a href=""  class="fl  w-16 h-16 mt-10" style="background:url(static/img/center-img22.png) -110px -4px no-repeat"></a>
+												</div>
+											</td>
+										</tr>
+										<tr class="bor-b-e1e3e5">
+											<td class="w-80 pt-20 pb-25 pl-10 pr-10">
+												<div class="fl w-80 h-80 bor-e1e3e5" :style="'background:url('+item.thumb+') center/cover no-repeat'"></div>
+											</td>
+											<td class=" pt-20 pb-25 left pl-25">
+												<div class="mb-3">{{item.goodsName}}</div>
+												<div class="c-999">{{item.goodsAttr}}</div>
+												<div class="c-999" v-if="item.orderAttribute"><span v-for="itattr in item.orderAttribute" class="mr10">{{itattr.goodsAttribute}}:{{itattr.totalValue}}{{itattr.group}}</span></div>
+											</td>
+											<td class="w-90 pt-20 pb-25 c-333">
+												<div>￥{{item.amount}}</div>
+											</td>
+
+											<td class="wid150 pt-20 pb-25 bor-r-e1e3e5">
+												<div>{{item.createTime}}</div>
+											</td>
+											<td class="w-80 pt-20 pb-25 l-h17 bor-r-e1e3e5">
+												<div v-if="item.type==1">仅退款</div>
+												<div v-else>退货退款</div>
+											</td>
+											<td class="w-80 pt-20 pb-25 l-h17 bor-r-e1e3e5">
+												<div v-if="item.refundStatus==-1">已取消</div>
+												<div v-if="item.refundStatus==-2">审核拒绝</div>
+												<div v-if="item.refundStatus==1">审核中</div>
+												<div v-if="item.refundStatus==2">审核通过</div>
+												<div v-if="item.refundStatus==3">买家已发货</div>
+												<div v-if="item.refundStatus==4">售后完成</div>
+											</td>
+											<td class="w-110 pt-20 pb-25 bor-r-e1e3e5">
+												<div class="cursor" @click="goReturn(item)">服务详情</div>
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<div class="bor-t-f2f4f6 pt-50 pb-50  right">
+							<el-pagination
+										   next-text="下一页>>"
+										   prev-text="<<上一页"
+										   layout="prev, pager, next"
+										   @current-change="handleCurrentChange"
+										   :current-page.sync="pageNo"
+										   :page-size="limit"
+										   :total="total">
+							</el-pagination>
+						</div>
+					</div>
+				</div>
+				<div class="nolist" v-if="total<=0 && list">
+					<img src="static/img/no.png" alt="">
+					<div>暂无数据</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_order.js"></script>
+</body>
+</html>

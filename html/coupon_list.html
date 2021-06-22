@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="widdiv=device-widdiv,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="audivor" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="">
+		<header-top></header-top>
+		<header-lists header-type="1" :header-list="category" :header-all-list="categoryAll" :nav-show="false" :type="type"></header-lists>
+		<div class="wid1190 coupon pb75 pt35">
+			<div class="f-cb">
+				<div class="bgfff f-cb voucher  fsize12 mb20 brad4 rel fl" v-for="(item,index) in list" :class="(index+1)%3==0?'':'mr20'">
+					<img :src="item.thumb?item.thumb:'static/img/list_ico15.jpg'" class="img-cover fl voucher-img mr15">
+					<div class="fl wid190">
+						<div class="coe42008 mb10 pt10 fsize18">¥<span class="fsize30">{{item.price}}</span></div>
+						<div class="row2" v-if="item.condition>0">满{{item.condition}}元可用</div>
+						<div v-else>无门槛</div>
+					</div>
+					<div class="voucher-fr fsize18 cursor" @click="receiveCoupon(item.id)">立即领取</div>
+				</div>
+
+			</div>
+			<div class="nolist" v-if="total<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+
+			<el-pagination v-if="total>0"
+						   class="center mt30"
+						   next-text="下一页>>"
+						   prev-text="<<上一页"
+						   layout="prev, pager, next"
+						   @current-change="handleCurrentChange"
+						   :current-page.sync="pageNo"
+						   :page-size="limit"
+						   :total="total">
+			</el-pagination>
+
+		</div>
+
+		<my-footer></my-footer>
+
+		<div class="back-black " :class="backShow?'back-black-show':''">
+			<div class="back-black-bg" @click="backShow=false"></div>
+			<div class="back-black-con">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="backShow=false">
+				<div class="fsize12 center back-coupon">
+					<img src="static/img/list_ico10.png" class="mb10">
+					<div class="fsize16 mb5">恭喜您，领取成功！</div>
+					<div class=" co99 mb15">感谢您的参与，祝您购物愉快。</div>
+					<div class="f-cb lh30">
+						<div class="fl cofff bge42008 wid86 cursor">立即使用</div>
+						<div class="fr bgf2f4f6 wid86 co66 cursor" @click="backShow=false">关闭</div>
+					</div>
+				</div>
+				<div class="fsize12 co99 pl10 pb10">{{time}}秒后自动关闭</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/coupon_list.js"></script>
+
+</body>
+
+</html>

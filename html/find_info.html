@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="widdiv=device-widdiv,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="audivor" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="" v-if="isShow">
+		<header-top></header-top>
+		<header-find header-type="2" :header-list="category" :header-all-list="categoryAll"  :type="type" category-Class="info"></header-find>
+
+		<div class="wid1190  pb75 pt35">
+
+			<div class="f-cb bgfff find-info mb20">
+				<div class="fl find-info-fl rel bor-rif2f4f6">
+					<div class="bor bor-cof4f4f4 fl ">
+						<div class="swiper-container swiper1 ">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" v-for="item in info.photo">
+									<img :src="item.url" class="block img-contain ">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="fr co66 wid450">
+						<div class="fsize24  bold mb20">{{info.title}}</div>
+						<div class="rel lh24 text mb40">
+							<div class="abs list-ico ico1 "></div>
+							<div class="abs list-ico ico2 "></div>
+							{{info.content}}
+						</div>
+						<a target="_blank" :href="'store_pro.html?company='+info.companyId+'&id='+info.goodsId" class="cofff bge42008 center pd15 lh40 cursor in-block abs b36 l449">￥{{info.goods.price}} | 立即购买</a>
+					</div>
+				</div>
+				<div class="fr find-info-fr">
+					<a :href="'store.html?company='+info.companyId" class="center fr-top block hovere42008">
+						<img :src="info.company.logo.url" class="tx img-cover mar-cen mb10">
+						<div class=" mb15">{{info.company.name}}</div>
+						<div class="fsize12 mb15 co66 lh18">{{info.company.description}}</div>
+						<div class="fsize12 co99"><img src="static/img/fix_ico1.png" class="img mr5">粉丝 {{info.company.collect}}</div>
+					</a>
+					<div class="fr-top-tit mb15 rel cofff center"><div class="rel">推荐列表</div></div>
+					<div class="pd10">
+						<a target="_blank" :href="'store_pro.html?company='+info.companyId+'&id='+info.goodsId" class="f-cb fr-con bor-bof2f4f6 pt10 pb10" >
+							<img :src="info.goods.thumb.url" class="fl img-cover">
+							<div class="fr fsize12 ">
+								<div class="row2 lh20 h42 mb20">{{info.goods.name}}</div>
+								<div class="co99">浏览数   {{info.goods.click}}</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="bgfff" v-if="info.like.length>0">
+				<div class="fsize16 pd30 pt30 ">你也许还喜欢</div>
+				<div class="f-cb pl20 pr20">
+					<a target="_blank" :href="'store_pro.html?company='+info.companyId+'&id='+item.id" class="fl  fsize12  pb15 pl10 pr10 pt10  home-pro rel" v-for="(item,index) in info.like">
+						<img :src="item.thumb.url" class="img-cover mar-cen mb20 w100 block">
+						<div class="co66 row2 mb10 lh24 h45 fsize14 hovere42008">{{item.name}}</div>
+						<div class="coff2e58  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+
+					</a>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/find_info.js"></script>
+
+</body>
+
+</html>

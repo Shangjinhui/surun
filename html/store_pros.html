@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet"  href="static/public/lightbox2/css/lightbox.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+	<script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=kix3GgvM7U7OKK3aZjNHUNTb"></script>
+</head>
+
+<body class="store">
+	<div id="app" v-cloak="">
+		<header-top></header-top>
+		<header-store></header-store>
+		<div class="wid1190 pb50">
+			<div class="co66 lh50">所有分类 > "{{info.typeName}}"</div>
+			<div class="f-cb">
+				<div class="fr wid990">
+					<div class="bor bor-cof4f4f4 pro-store-box pb30">
+						<!--问答专区-->
+						<div class="pd30 pt30  pro-answer">
+							<div class="pro-answer-box fsize12 co66 rel bor-bof2f4f6 pt20 ">
+								<span class="abs ico1 cofff center">问</span>
+								<div class="f-cb lh20 mb10">
+									<img :src="question_list.user.logo.url" class="img-cover mr15 fl" v-if="question_list.user&&question_list.user.logo"><img v-else src="static/img/center-img3.jpg" class="img-cover mr15 fl">{{question_list.user?question_list.user.nickname:''}}
+									<div class="fr co99">{{question_list.createTime}}</div>
+								</div>
+								<div class="rel pr50 fsize14 text lh20 mb20">
+									{{question_list.content}}
+									<div class="abs cursor" v-if="question_list.self==0"  @click="Question_reply_state">回复</div>
+								</div>
+								<div class="" v-for="(item,index) in reply" v-if="item.id">
+									<div class="rel pro-answer-con">
+										<span class="abs ico2 cofff center">答</span>
+										<div class="f-cb lh20 mb10">
+											<img :src="item.user.avatar.url" class="img-cover mr15 fl" v-if="item.user.avatar.url"><img v-else src="static/img/center-img3.jpg" class="img-cover mr15 fl">{{item.user.nickename}}
+											<div class="fr co99">{{item.createTime}}</div>
+										</div>
+										<div class="rel fsize14 text lh20 mb20">
+											{{item.content}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<el-pagination class="right mt30 pr20"
+						   next-text="下一页>>"
+						   prev-text="<<上一页"
+						   :page-size="limit"
+						   layout="prev,pager,next"
+						   @current-change="QCurrentPage"
+						   :total="Qcount">
+						</el-pagination>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="back-black" :class="q_state?'back-black-show':''">
+			<div class="back-black-bg"></div>
+			<div class="back-black-con wid555 answer-back">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="Question_reply_state">
+				<div class="back-black-tit">{{Q_A[Q_num].name}}</div>
+				<div class="pl20 pr20 pb25">
+					<div class="fsize12 co66 center mt20 mb15">{{Q_A[Q_num].title}}</div>
+					<div class="rel mb15">
+						<textarea placeholder="填写您的问题，4-100字" v-model="texts" maxlength="100" class="bor bor-cof4f4f4"></textarea>
+						<div class="abs tx fsize12 co99">{{texts.length}}/100</div>
+					</div>
+					<div class="right lh30">
+						<div class="in-block cofff bge42008 wid86 cursor center" @click="Release_problem">发布</div>
+						<div class="in-block bgf2f4f6 wid86 cursor center" @click="Question_reply_state">取消</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/public/lightbox2/js/lightbox.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/store_pros.js"></script>
+</body>
+</html>

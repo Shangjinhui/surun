@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="" v-if="isShow">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-store :story-info="info"></header-store>
+
+
+
+		<div class="wid1190 pb50 pt50">
+			<div class="bgfff pd30 pt30 pb30">
+				<div v-html="info.story"></div>
+			</div>
+
+		</div>
+
+
+
+
+		<my-footer></my-footer>
+
+		<fixed-top :only-service="true" :group-id="info.customerServiceId"></fixed-top>
+
+
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/store_about.js"></script>
+
+
+</body>
+
+</html>

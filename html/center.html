@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+	<link rel="stylesheet" href="static/css/index.css">
+
+</head>
+<style type="text/css">
+	.el-select .el-input .el-select__caret{color: #444;}
+</style>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a target="_blank" href="index.html" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">个人信息</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-35 f-14 c-333 por title bor-b-f1f3f5 mb-35">个人信息</div>
+				<div class="f-cb pb-100"  v-if="isShow">
+					<div class="fl pl-45">
+						<div class="w-530 bor-r-f1f3f5">
+							<div class="f-cb mb-25">
+								<div class="fl w-80 h-78 lh-78">头像</div>
+								<div class="fl h-78 w-78 b-radio-50 mr-27 rel center-img" :style="'background:url('+imageUrl+') center/cover no-repeat'" v-if="!avatar"></div>
+								<div class="fl h-78 w-78 b-radio-50 mr-27 rel center-img" :style="'background:url('+avatar+') center/cover no-repeat'" v-if="avatar"></div>
+								<div class="fl por w-80 h-28 lh-26 f-12 c-666  bor-r-d2d2d2 mt-27">
+									<el-upload
+									  	class="avatar-uploader"
+									  	:action="uploadUrl"
+										:headers="{Platform: 2}"
+									  	:show-file-list="false"
+									  	:on-success="handleAvatarSuccess"
+									  	:before-upload="beforeAvatarUpload">
+									  	<div class="w-78">设置头像</div>
+									</el-upload>
+								</div>
+							</div>
+							<div class="f-cb mb-25">
+								<div class="fl w-80 h-38 lh-38">昵称</div>
+								<div class="fl w-445">
+									<el-input v-model="nickname" placeholder="请输入内容" class="w-310"></el-input>
+									<p class="mt-8 c-c3c3c3 f-13">*昵称填写须知：与苏润易购或者卖家品牌冲突的昵称，苏润将有可能收回</p>
+								</div>
+							</div>
+							<div class="f-cb mb-12">
+								<div class="fl w-80 h-38 lh-38">真实姓名</div>
+								<div class="fl w-445">
+									<el-input v-model="truename" placeholder="请输入内容" class="w-310"></el-input>
+								</div>
+							</div>
+							<div class="f-cb mb-10">
+								<div class="fl w-80 h-38 lh-38">性别</div>
+								<div class="fl w-445 lh-38">
+									<template>
+									  <el-radio v-model="sex" label="1">男</el-radio>
+									  <el-radio v-model="sex" label="2">女</el-radio>
+									</template>
+								</div>
+							</div>
+							<div class="f-cb mb-15">
+								<div class="fl w-80 h-38 lh-38">手机</div>
+								<div class="fl w-445 lh-38 f-14"><span class="fl f-arial">{{phone}}</span><div class="fl a-decoration ml-15 coe42008 cursor" @click="backShow=true">修改</div></div>
+							</div>
+							<div class="f-cb mb-25">
+								<div class="fl w-80 h-38 lh-38">绑定微信号</div>
+								<div class="fl w-445 lh-38 f-14">
+									<div class="fl">{{bindWechat==1?'已绑定':''}}</div>
+									<div class="fl a-decoration ml-15 coe42008 cursor" v-if="bindWechat==1" @click="unbindShow=true">解绑</div>
+									<a class="fl a-decoration ml-15 coe42008 cursor" v-else href="https://open.weixin.qq.com/connect/qrconnect?appid=wx086e0559a422c0e1&redirect_uri=http%3A%2F%2Fdemo2.yunmofo.cn%2Fsurun_shop%2Fhtml%2Fcenter.html&response_type=code&scope=snsapi_login">绑定</a>
+								</div>
+							</div>
+							<div class="f-cb mb-25">
+								<div class="fl w-80 h-38 lh-38">居住地</div>
+								<div class="fl w-445 lh-38 f-14 select">
+									<template>
+									  <el-select v-model="province" placeholder="请选择" class="w-100">
+										  <el-option
+												  v-for="item in provinceList"
+												  :key="item.oid"
+												  :label="item.name"
+												  :value="item.oid">
+										  </el-option>
+									  </el-select>
+									</template>
+									<template>
+									  <el-select v-model="city" placeholder="请选择" class="w-100">
+										  <el-option
+												  v-for="item in cityList"
+												  :key="item.oid"
+												  :label="item.name"
+												  :value="item.oid">
+										  </el-option>
+									  </el-select>
+									</template>
+									<template>
+									  <el-select v-model="area" placeholder="请选择" class="w-100">
+										  <el-option
+												  v-for="item in areaList"
+												  :key="item.oid"
+												  :label="item.name"
+												  :value="item.oid">
+										  </el-option>
+									  </el-select>
+									</template>
+								</div>
+							</div>
+							<div class="f-cb">
+								<div class="fl w-80 h-38 lh-38">出生日期</div>
+								<div class="fl w-445 lh-38 f-14">
+									<el-date-picker
+								      	v-model="birthday"
+								      	type="date"
+								      	placeholder="选择日期"
+										value-format="yyyy-MM-dd">
+								    </el-date-picker>
+							    </div>
+							</div>
+						</div>
+						<div @click="editInfo" class="c-fff bge42008 w-200 h-45 lh-45 center mt-30 ml-80 f-16">保存</div>
+					</div>
+					<div class="fr w-335">
+						<div class="w-100 h-100 pointer b-radio-50" :class="isSign?'img-gary':''" @click="sign" style="background:url(static/img/center-img4.jpg) center/cover no-repeat">
+							<p class="f-16 center l-h12 c-fff pt-60" v-if="!isSign">签到</p>
+							<p class="f-16 center l-h12 c-fff pt-60" v-if="isSign">已签到</p>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+
+
+		<div class="back-black " :class="backShow?'back-black-show':''">
+			<div class="back-black-bg" @click="backShow=false"></div>
+			<div class="back-black-con">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="backShow=false">
+				<div class="fsize12 center back-coupon">
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) 3px -126px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="text" placeholder="请输入手机号码" class="h-36 pd15 w100" v-model="newPhone">
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -36px -158px no-repeat"></div>
+						<div class="w-254 fr el-input fsize12">
+							<input type="text" placeholder="请输入验证码" class="h-36 pd15 fl wid150 bor-r-e1e3e5" v-model="newSmsCode">
+							<div class="fr w-100 center lh36 cursor coe42008" id="code" @click="sendSms">获取验证码</div>
+						</div>
+					</div>
+					<div class="f-cb lh36 mt25">
+						<div class="fl cofff bge42008 wid130 cursor" @click="editPhone">确认</div>
+						<div class="fr bgf2f4f6 wid130 co66 cursor" @click="backShow=false">取消</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--解除绑定-->
+		<div class="back-black" :class="unbindShow?'back-black-show':''">
+			<div class="back-black-bg" @click="unbindShow=false"></div>
+			<div class="back-black-con wid484 center pt60 pb70">
+				<div class=" fsize24 mb25">温馨提示</div>
+				<div class="co66 fsize16 mb5">您确定要解除与苏润易购的微信绑定吗？</div>
+				<div class="pt60 lh40 center">
+					<div class="c-fff bge42008 inline-block cursor wid130 mr10 bor bor-e42008 " @click="unbindWx">确认</div>
+					<div class="bor wid130 inline-block cursor" @click="unbindShow=false">取消</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/center.js"></script>
+</body>
+</html>

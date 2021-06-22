@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-home :category="category.id"></header-home>
+
+		<div class="wid1190 pb75">
+			<div class="co66 lh50">所有分类 <span v-if="category">> "{{category.name}}"</span> 共 <span class="coe42008">{{count}}</span> 个商品</div>
+
+			<div class="bgfff select-box mb10">
+				<table class="lh55">
+					<tr class="bor-bof2f4f6" v-for="(item,index) in selectList">
+						<td class="right" width="110" style="vertical-align:top;">{{item.name}}：</td>
+						<td class="co66 pl30 pr120 rel">
+							<div class="f-cb ovh" :class="item.isShow?'':'h55'">
+								<div class="fl mr30 cursor hovere42008" v-for="(it,ind) in item.value" :class="[it.state?'coe42008':'']" @click="multiple(it,ind,index)">{{it.name}}</div>
+								<div class="abs btn1 bor center fsize12 hovere42008 cursor on" @click="toggleMore(index)">{{item.more?'取消多选':'多选'}}</div>
+								<div class="abs btn fsize13 cursor hovere42008" v-if="item.isMore" @click="showMore(index)">{{item.isShow?'收起':'更多'}}<img src="static/img/head_ico8.png" alt=""></div>
+							</div>
+						</td>
+					</tr>
+					<!-- <tr class="bor-bof2f4f6" >
+						<td class="right" width="96" style="vertical-align:top;">筛选条件：</td>
+						<td class="co66 pl30 pr120 rel " >
+							<el-dropdown @command="handleCommand" class="mr30">
+							  <span class="el-dropdown-link">
+								{{selecttx?selecttx:'适用季节'}}<i class="el-icon-arrow-down el-icon--right"></i>
+							  </span>
+								<el-dropdown-menu slot="dropdown">
+									<el-dropdown-item command="a">黄金糕</el-dropdown-item>
+									<el-dropdown-item command="b">狮子头</el-dropdown-item>
+									<el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
+									<el-dropdown-item command="d">双皮奶</el-dropdown-item>
+									<el-dropdown-item command="e">蚵仔煎</el-dropdown-item>
+								</el-dropdown-menu>
+							</el-dropdown>
+							<el-dropdown @command="handleCommand">
+							  <span class="el-dropdown-link">
+								{{selecttx?selecttx:'适用季节'}}<i class="el-icon-arrow-down el-icon--right"></i>
+							  </span>
+								<el-dropdown-menu slot="dropdown">
+									<el-dropdown-item command="a">黄金糕</el-dropdown-item>
+									<el-dropdown-item command="b">狮子头</el-dropdown-item>
+									<el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
+									<el-dropdown-item command="d">双皮奶</el-dropdown-item>
+									<el-dropdown-item command="e">蚵仔煎</el-dropdown-item>
+								</el-dropdown-menu>
+							</el-dropdown>
+						</td>
+					</tr> -->
+					<tr class="bor-bof2f4f6">
+						<td class="right" width="96" style="vertical-align:top;">其他：</td>
+						<td class="co66 pl30 pr120 rel select-con" >
+							适用人群：
+							<el-select v-model="crowd"  class="mr50">
+								<el-option
+									v-for="item in crowds"
+									:key="item.id"
+									:label="item.name"
+									:value="item.id">
+								</el-option>
+							</el-select>
+							适用年龄：
+							<el-select v-model="age" >
+								<el-option
+									v-for="item in ages"
+									:key="item.id"
+									:label="item.name"
+									:value="item.id">
+								</el-option>
+							</el-select>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="bgfff mb10 f-cb lh40 pr20 select-ipt">
+				<div class="fl co66 pd30 bor-rif2f4f6 cursor hovere42008" @click="sort(1)" :class="[init_Sort?'coe42008':'']">综合排序</div>
+				<div class="fl co66 pd30 bor-rif2f4f6 cursor hovere42008 rel pr35" @click="sort(2)" :class="[sale>=1?'coe42008':'']">销量<span class="abs" :class="[sale==1?'defb':'',sale==2?'defp':'',!sale?'def':'']"></span></div>
+				<div class="fl co66 pd30 bor-rif2f4f6 cursor hovere42008 rel store-pro-top pr35" @click="sort(3)" :class="[price?'coe42008':'']">价格<span class="abs" :class="[price==1?'defb':'',price==2?'defp':'',!price?'def':'']"></span></div>
+				<div class="fl  pl15">
+					<input type="text" class="price_input" v-model="min" min="0" onkeyup="carNum($(this))" placeholder="￥"> - <input type="text" v-model="max"  class="price_input" onkeyup="carNum($(this))" placeholder="￥">
+					<div class="btn" v-if="pState" @click="getlist">确认</div>
+				</div>
+			</div>
+			<div class="f-cb ">
+				<div class="fl fsize12 bgfff pb15 pl10 pr10 pt10 bor-bo bor-ri bor-cof4f4f4  home-pro rel" v-for="(item,index) in list">
+					<a target="_blank" :href="'store_pro.html?id='+item.id+'&company='+item.companyId" class="block">
+						<img :src="item.thumb.url" class="img-cover mar-cen mb20 w100 block h160">
+						<div class="coe42008  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+						<div class="co66 row2 mb10 lh24 h45 fsize14 hovere42008">{{item.name}}</div>
+						<div class="f-cb home-pro-tag mb5 h20 ovh">
+							<div class="fl red mr5" v-if="item.label1">{{item.label1}}</div><div class="fl blue mr5" v-if="item.label2">{{item.label2}}</div><div v-if="item.label3" class="fl green">{{item.label3}}</div>
+						</div>
+					</a>
+					<div class="home-pro-store"><a :href="'store.html?company='+item.companyId" class=" row1 fl rel mr10">{{item.company.name}}</a><img src="static/img/list_ico3.png"  class="cursor" @click="goService(item.company.customerServiceId)"></div>
+				</div>
+			</div>
+			<div class="nolist" v-if="list.length<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+			<div v-if="list.length">
+				<el-pagination class="center mt30"
+					next-text="下一页>>"
+					prev-text="<<上一页"
+					:page-size="15"
+					layout="prev, pager, next"
+					:total="count">
+				</el-pagination>
+			</div>
+		</div>
+		<my-footer></my-footer>
+		<!--<fixed-top></fixed-top>-->
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/product_list.js"></script>
+</body>
+	
+</html>

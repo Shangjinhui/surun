@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet"  href="static/public/lightbox2/css/lightbox.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class=" points">
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<!-- <header-list header-type="5" :header-list="category" :header-all-list="categoryAll" :nav-show="false"></header-list> -->
+		<div class="header bgfff">
+			<div class="wid1190 header-cen">
+				<div class="f-cb ">
+					<a href="index.html"><img src="static/img/logo.png" class="fl mt15 ml15 mr30"></a>
+					<div class="fl fsize24 co99 lh100">积分商城</div>
+					<div class="fl  ml60 mt35">
+						<div class="pb5">
+							<div class="rel fsize12 header-seach brad20 wid510 ">
+								<input type="text" autocomplete="off" id="search" v-model="searchTx" placeholder="试一下您心动的关键字吧" class="h35 pl20 pr80 fsize12 brad20 w100 header-seach-ipt">
+								<div class="abs cofff bge42008 brad20 top-0 right-0 center wid70 lh35 fsize16 cursor" @click="toGetList">搜索</div>
+								<!-- <div class="abs header-seach-text brad4  pt10 pb10" v-if="focusShow&&searchList"><div v-for="(item,index) in searchList" @click="searchTx=item.name;search()" class="pd15 cursor row1" :class="index==0?\'on\':\'co999\'">{{item.name}}</div></div> -->
+							</div>
+						</div>
+			 		</div>
+					<div class="fr brad20 bor lh36 pr12 pl25 mt35 mr40 f-cb cursor" @click="carlist">
+						<img src="static/img/head_ico3.png"  class="vertical-4 mr5">购物车
+						<span class="bge42008 cofff brad20 ml12 fr lh20 mt8 pl5 pr5">{{cartNum}}</span>
+					</div>
+				</div>
+				<div class="f-cb">
+					<div class="fl header-nav lh40 wid1120 rel " :class="slideState?'':'h40 ovh'">
+						<div @click="goLists(-1)" class="fl wid160 bge42008 cofff cursor center mr30">为你推荐</div>
+						<div @click="goLists(item.id)" class="fl mr30  rel header-nav-item hovere42008 cursor" :class="type==item.id?'coe42008':''" v-for="item in category">{{item.name}}</div>
+					</div>
+					<div class="fr pr20 lh40 arr-top cursor text-none" v-if="isMore" :class="slideState?'on':''" @click="navState">更多</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wid1190 pb50">
+			<div class="co66 lh50">所有分类 > {{info.typeName}}</div>
+
+				<div class="mb20 ">
+					<div class="f-cb mb40">
+						<div class="fl pro-banner rel mr15">
+							<div class="mb10" id="box">
+								<div class=" rel" @mouseenter="mouseenter"
+									 @mouseleave="mouseLeave" @mousemove="picMove">
+									<div class="pro-img-big" :style="'background-image:url('+bannerImg+')'"></div>
+									<div class="mask" v-if="bigShow"></div>
+								</div>
+								<!--放大层-->
+								<div class="pro-img-big-bx bgfff abs" v-if="bigShow">
+									<div :style="'background-image:url('+bannerImg+')'"></div>
+								</div>
+							</div>
+							<div class="gallery-thumbs-box rel">
+								<div class="swiper-button-next gallery-top-fr"></div>
+								<div class="swiper-button-prev gallery-top-fl"></div>
+								<div class="swiper-container gallery-thumbs">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide pro-img-small " v-for="item in bannerList" v-if="item">
+											<div class="  cursor" :style="'background-image:url('+item+')'"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="fl pro-top-tx ">
+							<div class="fsize24 lh42 mb10">{{info.name}}</div>
+
+							<div class="bgf2f4f6 pt5 pb5 mb20">
+								<div class="f-cb lh30 fsize12 pl15 ">
+									<div class="label co99 h30">价格</div>
+									<div class="fr pro-top-fr  coe42008">
+										<span class="fsize24">{{price}}</span> 积分
+									</div>
+								</div>
+								<div class="f-cb lh30 fsize12 pl15">
+									<div class="label co99 h30">库存</div>
+									<div class="fr pro-top-fr  ">{{stock}}</div>
+								</div>
+								<div class="f-cb lh30 fsize12 pl15">
+									<div class="label co99 h30">已兑换</div>
+									<div class="fr pro-top-fr  ">{{info.saleCount}}件</div>
+								</div>
+							</div>
+
+							<div class="f-cb lh40 fsize12  pl15" v-for="(item,n) in typeAttrList">
+								<div class="label co99 h40">{{item.name}}</div>
+								<div class="fr pro-top-fr f-cb co66">
+									<div  :class="[subIndex[n] == index?'on':'',oItem.isShow?'':'disble']" @click="specificationBtn(item.name,oItem.name,n,$event,index)" v-for="(oItem,index) in item.valueList" class="item item1 center fl bor bor-cof4f4f4 mr10 mb10 cursor  rel">
+										<!--<img src="static/img/banner.jpg" class="img-cover mr10 fl">-->
+										{{oItem.name}}
+									</div>
+								</div>
+							</div>
+
+							<div class="f-cb lh30 fsize12  pl15">
+								<div class="label co99 h40">数量</div>
+								<div class="fr pro-top-fr  f-cb co66 ">
+									<el-input-number v-model="quantity" :min="1" :max="stock*1" label="描述文字"></el-input-number>
+								</div>
+							</div>
+							<div class="cofff lh40  btn mt30 pl88">
+								<div class="in-block center cursor bg00a1ec ml5" @click="collectInfo"><span class="in-block list-ico  vertical-4 mr5" :class="isCollect==0?'ico5':'ico6'"></span>{{isCollect==0?'收藏商品':'取消收藏'}}</div>
+								<div class="in-block center cursor ml5 bge42008" @click="exchange">立即兑换</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bor bor-cof4f4f4 pro-store-box pb30">
+					<div class="bgf0f0f0 lh40 f-cb tit">
+						<div class="fl center wid120 rel bor-ri cursor" :class="item.id==state?'bgfff coe42008':''" v-for="item in stateList" @click="state=item.id">{{item.name}}<span v-if="item.id==2">({{total}})</span></div>
+					</div>
+
+					<!--商品详情-->
+					<div class="f-cb " v-if="state==1">
+						<div class="pt20 pl20 pr20 pb20" v-html="info.content"></div>
+					</div>
+
+					<!--累计评价-->
+					<div class="" v-if="state==2">
+						<div class="rel pro-eva" v-for="(item,index) in list">
+							<div class="abs center pro-eva-tx fsize12 co66">
+								<img :src="item.user.avatar?item.user.avatar:'static/img/center-img3.jpg'" class="img-cover mar-cen mb5">
+								<div class="">{{item.user.nickname}}</div>
+							</div>
+							<div class="bor-bof2f4f6 pb20">
+								<div class="mb5"><span class="list-ico " v-for="(it,idx) in 5" :class="idx<item.score?'ico2':'ico1'"></span></div>
+								<div class="co66 mb10 lh20">{{item.content}}</div>
+								<div class="f-cb mb5" v-if="item.photoUrl">
+									<a target="_blank" :href="it" class="mr5 fl mb5" v-for="it in item.photoUrl" :data-lightbox="'image-'+index">
+										<img :src="it" class="img-cover img">
+									</a>
+								</div>
+								<div class="co99 fsize12 mb15"><span class="mr20">{{item.createTime}}</span> <span v-for="it in item.attrInfo" class="mr5">{{it.attrName}}：{{it.attrValue}}</span></div>
+								<div class="co66 tx lh20 rel" v-if="item.reply"><span class="co99">商家回复：</span>{{item.reply}}</div>
+							</div>
+						</div>
+
+						<el-pagination  class="right mt30 pr20"
+										v-if="total>0"
+									   next-text="下一页>>"
+									   prev-text="<<上一页"
+									   layout="prev, pager, next"
+									   @current-change="handleCurrentChange"
+									   :current-page.sync="pageNo"
+									   :page-size="limit"
+									   :total="total">
+						</el-pagination>
+					</div>
+
+
+
+				</div>
+
+
+
+
+		</div>
+
+
+
+
+
+		<my-footer></my-footer>
+
+
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/public/lightbox2/js/lightbox.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/points_pro.js"></script>
+
+
+</body>
+
+</html>

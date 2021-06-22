@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="order">
+		<header-top></header-top>
+		<div class="bg-fff shadow-2 mb-25">
+			<div class="w-1190 auto f-cb pt-15 pb-12" style="background:url(static/img/center-img38.jpg) 820px 0 no-repeat">
+				<a href="index.html" target="_blank"><img src="static/img/logo.png" alt="" class="fl ml-25"></a>
+				<img src="static/img/center-img49.png" class="fl ml-30 mt-30">
+			</div>
+		</div>
+		<div class="crumbs w-1190 l-h12 mb-55 f-12 c-999"><a href="index.html" class="c-999 mr-5 c-hover" target="_blank">首页</a>><span class="c-999 mr-5 ml-5 c-hover">积分详情</span></div>
+
+
+		<div class="w-965 auto f-cb center mb-70" v-if="info.refundStatus!=5">
+			<!--1待发货2待收货3待评价4已完成-->
+			<div class="w-28 h-28 b-radio-50 lh-28 por fl" :class="info.orderStatus>=1?'bg-e42008 c-fff':'bg-fcfcfd bor-d2d2d2 c-999'">1<div :class="info.orderStatus>=1?'c-333 bold':''" class="abs left-cen w-100">拍下商品</div></div>
+			<div class="wid190 h-2 mt-13 fl ml-7 mr-7" :class="info.orderStatus>=1?'bg-e42008':'bg-dbdbdb'"></div>
+			<div class="w-28 h-28 b-radio-50 lh-28 por fl" :class="info.orderStatus>=1?'bg-e42008 c-fff':'bg-fcfcfd bor-d2d2d2 c-999'">2<div :class="info.orderStatus>=1?'c-333 bold':''" class="abs left-cen w-100 ">付款</div></div>
+			<div class="wid190 h-2 mt-13 fl ml-7 mr-7" :class="info.orderStatus>=2?'bg-e42008':'bg-dbdbdb'"></div>
+			<div class="w-28 h-28 b-radio-50 lh-28 por fl" :class="info.orderStatus>=2?'bg-e42008 c-fff':'bg-fcfcfd bor-d2d2d2 c-999'">3<div :class="info.orderStatus>=2?'c-333 bold':''" class="abs left-cen w-100">卖家发货</div></div>
+			<div class="wid190 h-2 mt-13 fl ml-7 mr-7" :class="info.orderStatus>=3?'bg-e42008':'bg-dbdbdb'"></div>
+			<div class="w-28 h-28 b-radio-50 lh-28 por fl" :class="info.orderStatus>=3?'bg-e42008 c-fff':'bg-fcfcfd bor-d2d2d2 c-999'">4<div :class="info.orderStatus>=3?'c-333 bold':''" class="abs left-cen w-100">确认收货</div></div>
+			<div class="wid190 h-2 mt-13 fl ml-7 mr-7" :class="info.orderStatus>=4?'bg-e42008':'bg-dbdbdb'"></div>
+			<div class="w-28 h-28 b-radio-50 lh-28 por fl" :class="info.orderStatus>=4?'bg-e42008 c-fff':'bg-fcfcfd bor-d2d2d2 c-999'">5<div :class="info.orderStatus>=4?'c-333 bold':''" class="abs left-cen w-100">评价</div></div>
+		</div>
+		<div class="f-cb w-1190 bor-e1e3e5 mb-23">
+			<div class="fl w-305 bor-r-e1e3e5">
+				<div class="pl-12 h-36 bor-b-e1e3e5 lh-36 f-12 c-333 bg-f2f4f6">订单信息</div>
+				<div class="pl-12 pt-20 pb-30 f-12 c-666 l-h15 bg-fcfcfd">
+					<div class="f-cb mb-12">
+						<div class="fl w-60">收货地址 :</div>
+						<div class="fl w-215">{{info.contact}}，{{info.phone}}，{{info.regionName}}</div>
+					</div>
+					<div class="f-cb mb-12">
+						<div class="fl w-60">订单编号 :</div>
+						<div class="fl w-170">{{info.orderNo}}</div>
+					</div>
+					<div class="f-cb mb-12">
+						<div class="fl w-60">交易时间 :</div>
+						<div class="fl w-170">{{info.createTime}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="fr w-880 pt-45 pl-50 l-h16">
+				<!--交易关闭-->
+				<div class="pl-65 por" v-if="info.orderStatus==0">
+					<div class="w-38 h-38 abs l-0 t-0" style="background:url(static/img/center-img22.png) -87px -92px no-repeat"></div>
+					<div class="f-14 c-333 mb-45 lh-38">交易关闭</div>
+				</div>
+				<!--待发货-->
+				<div class="pl-65 por" v-if="info.orderStatus==1">
+					<div class="w-38 h-38 abs l-0 t-0" style="background:url(static/img/center-img22.png) -85px -37px no-repeat"></div>
+					<div class="f-14 c-333 mb-45">等待卖家发货</div>
+					<div class="w-160 h-40 lh-40 center c-fff f-14 bg-e42008 pointer" @click="remindInfo()">提醒发货</div>
+				</div>
+				<!--待确认-->
+				<div class="pl-65 por" v-if="info.orderStatus==2">
+					<div class="w-38 h-38 abs l-0 t-0" style="background:url(static/img/center-img22.png) -85px -37px no-repeat"></div>
+					<div class="f-14 c-333">卖家已发货</div>
+					<div class="f-12 c-666 mb-45">物流：{{info.shipName}} 运单号:{{info.shipNo}}</div>
+					<div class="w-160 h-40 lh-40 center c-fff f-14 bg-e42008 pointer" @click="confirmInfo()">确认收货</div>
+				</div>
+				<!--待评价-->
+				<div class="pl-65 por" v-if="info.orderStatus==3">
+					<div class="w-38 h-38 abs l-0 t-0" style="background:url(static/img/center-img22.png) -85px -37px no-repeat"></div>
+					<div class="f-14 c-333">等待买家评价</div>
+					<div class="f-12 c-666 mb-45">物流：{{info.shipName}} 运单号:{{info.shipNo}}</div>
+					<a target="_blank" :href="'o_evaluation.html?id='+id" class="w-160 block h-40 lh-40 center c-fff f-14 bg-e42008 pointer">立即评价</a>
+				</div>
+				<div class="pl-65 por" v-if="info.orderStatus==4">
+					<div class="w-38 h-38 abs l-0 t-0" style="background:url(static/img/center-img22.png) -85px -37px no-repeat"></div>
+					<div class="f-14 c-333">买家已评价</div>
+					<div class="f-12 c-666 mb-45">物流：{{info.shipName}} 运单号:{{info.shipNo}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="w-1190 mb-40">
+			<table class="f-12 c-666 bor-e1e3e5 tables top">
+				<tr class="h-38 lh-38 bg-fcfcfd f-inherit bor-b-e1e3e5">
+					<th class="pl-20  left bor-r-e1e3e5">商品信息</th>
+					<th width="245">单价</th>
+					<th width="150" class="bor-r-e1e3e5">数量</th>
+					<th width="205">状态</th>
+				</tr>
+				<tr class="bor-b-e1e3e5" v-for="item in info.orderGoods">
+					<td class="pt-15 pb-15 bor-r-e1e3e5">
+						<a :href="'points_pro.html?id='+item.goodsId" class="f-cb pl-20 block">
+							<div class="fl w-80 h-80 bor-e1e3e5" :style="'background: url('+item.thumb+') center center / cover no-repeat;'"></div>
+							<div class="fl w-305 ml-25 l-h16">
+								<div class="mb-3">{{item.goodsName}}</div>
+								<div class="c-999">{{item.goodsAttr}}</div>
+							</div>
+						</a>
+					</td>
+					<td class="center pt-15 pb-15">{{item.price}}积分</td>
+					<td class="center pt-15 pb-15 bor-r-e1e3e5">{{item.quantity}}</td>
+					<td class="center pt-15 pb-15">
+						<div v-if="item.refundStatus==1">退款中</div>
+						<div v-else-if="item.refundStatus==2">退款成功</div>
+						<div v-else>{{info.orderStatusTitle}}</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="w-1190 mb-70 bg-f9f9f9 pt-25 pr-20 pl-15 f-12 c-666 l-h12 pb-40 right">
+			<div class="f-cb mb-5">
+				<div class="fl">付款方式：积分兑换</div>
+				<div class="fr min-100 c-333">{{info.goodsAmount}}积分</div>
+				<div class="fr">商品总价：</div>
+			</div>
+			<div class="f-cb mb-5">
+				<div class="fl">兑换时间：{{info.createTime}}</div>
+				<div class="fr min-100 c-333">¥0.00</div>
+				<div class="fr">运费（快递）：</div>
+			</div>
+			<div class="f-cb lh20 mt10">
+				<div class="fr min-100 c-e42008 f-18">{{info.goodsAmount}}积分</div>
+				<div class="fr f-14 c-333">实付款：</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_exchange_info.js"></script>
+</body>
+</html>

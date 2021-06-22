@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a  target="_blank" href="index.html" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">消息中心</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-34 f-12 c-666 por bor-b-f1f3f5 c-666">
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==1 ? 'on cut':''" @click="store(1)">系统消息</span>
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==2 ? 'on cut':''" @click="store(2)">平台公告</span>
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==3 ? 'on cut':''" @click="store(3)">互动消息</span>
+				</div>
+				<div class="pl-35 pr-35 " v-if="store_num==1">
+					<div class="pt-20 pb-20 lh-20 bor-b-f1f3f5 pl-15 por " :class="item.orderInfo?'cursor':''" v-for="item in list" >
+						<span class="inline-block w-4 h-4 b-radio-50 abs l-0 t-28 bg-d8d8d8" :class="item.isRead==0 ? 'bg-e42008' :''"></span>
+						<div class="f-cb mb-5">
+							<div class="fl inline-block f-16 c-333" v-if="item.orderInfo" @click="orderInfo(item)">订单状态</div>
+							<div class="fl inline-block f-16 c-333" v-else>签到</div>
+							<div class="fr inline-block f-12 c-999">{{item.createTime}}</div>
+						</div>
+						<div class="f-cb f-12 c-666" v-if="item.orderInfo" @click="orderInfo(item)">
+							<div class="fl w-58 h-58 mr-13" v-if="item.orderInfo.thumb" :style="'background:url('+item.orderInfo.thumb+') center/cover no-repeat'"></div>
+							<div class="fl w-58 h-58 mr-13" v-else style="background:url(static/img/kong.png) center/cover no-repeat"></div>
+							<div class="fl">
+								<p>订单号：{{item.orderInfo.orderNo}}</p>
+								<p v-if="item.orderInfo.status==-1">订单已取消</p>
+								<p v-if="item.orderInfo.status==0">待付款</p>
+								<p v-if="item.orderInfo.status==1">拼团中</p>
+								<p v-if="item.orderInfo.status==2">待发货</p>
+								<p v-if="item.orderInfo.status==3">待收货</p>
+								<p v-if="item.orderInfo.status==4">快递已签收</p>
+								<p v-if="item.orderInfo.status==4"><span class="c-666 hovere42008 cursor">去看看吧</span></p>
+							</div>
+						</div>
+						<div class="f-cb f-12 c-666" v-else>
+							<div class="fl">
+								<p>{{item.content}}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pl-35 pr-35" v-if="store_num==2">
+					<a  target="_blank" :href="'c_info.html?id='+item.id" class="pt-20 pb-20 lh-20 bor-b-f1f3f5 pl-15 por block" v-for="item in list">
+						<span class="inline-block w-4 h-4 b-radio-50  abs l-0 t-28 bg-d8d8d8" :class="[item.isRead==0?'bg-e42008':'']"></span>
+						<div class="f-cb mb-5">
+							<div class="fl inline-block f-16 c-333">{{item.title}}</div>
+							<div class="fr inline-block f-12 c-999">{{item.createTime}}</div>
+						</div>
+						<div class="f-cb f-12 c-666">{{item.intro}}</div>
+					</a>
+				</div>
+				<div class="pl-35 pr-35" v-if="store_num==3">
+					<div class="pt-20 pb-20 lh-20 bor-b-f1f3f5 pl-60 por rel cursor" v-for="item in list"  @click="goService(item)">
+						<img :src="item.logo?item.logo.url:'static/img/ico.png'" class="abs wid48 h-48 top-20 left-0">
+
+						<div class="f-cb mb-5">
+							<div class="fl inline-block f-16 c-333">{{item.kefuName}}</div>
+							<div class="fr inline-block f-12 c-999">{{item.time}}</div>
+						</div>
+						<div class="f-cb f-12 c-666">{{item.jilu}}</div>
+					</div>
+				</div>
+				<div class="nolist" v-if="list&&list.length<=0">
+					<img src="static/img/no.png" alt="">
+					<div>暂无数据</div>
+				</div>
+				<div class=" pt-50 pb-50 pr-35 right" v-if="store_num!=3">
+					<el-pagination class="right pr20"
+					   next-text="下一页>>"
+					   prev-text="<<上一页"
+					   :page-size="limit"
+					   layout="prev,pager,next"
+					   @current-change="currentPage"
+					   :total="total">
+					</el-pagination>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_information.js"></script>
+</body>
+</html>

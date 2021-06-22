@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet"  href="static/public/lightbox2/css/lightbox.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+	<script type="text/javascript" src="http://developer.baidu.com/map/custom/stylelist.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=kix3GgvM7U7OKK3aZjNHUNTb"></script>
+
+</head>
+<style type="text/css">
+	.pro-banner .pro-img-small div video{
+		width:100%;
+		height:100%;
+	}
+</style>
+<body class="store">
+	<div id="app" v-cloak="" v-show="isShow">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-store v-on:enlarge-text="onEnlargeText" :shop-collect="shopCollect" :story-info="storyInfo"></header-store>
+
+		<div class="wid1190 pb50">
+			<div class="co66 lh50">所有分类 > "{{info.typeName}}"</div>
+			<div class="f-cb mb20">
+				<div class="fl bor-rif2f4f6 pr12">
+					<div class="f-cb mb40">
+						<div class="fl pro-banner rel mr15">
+							<div class="mb10" id="box">
+								<div class=" rel" @mouseenter="mouseenter"
+									 @mouseleave="mouseLeave" @mousemove="picMove">
+									<video v-if="bigType=='video'" class="pro-img-big" :src="bannerImg" controls></video>
+									<div v-else class="pro-img-big" :style="'background-image:url('+bannerImg+')'"></div>
+									<div class="mask" v-if="bigShow"></div>
+								</div>
+								<!--放大层-->
+								<div class="pro-img-big-bx bgfff abs" v-if="bigShow">
+									<div :style="'background-image:url('+bannerImg+')'"></div>
+								</div>
+							</div>
+							<div class="gallery-thumbs-box rel">
+								<div class="swiper-button-next gallery-top-fr"></div>
+								<div class="swiper-button-prev gallery-top-fl"></div>
+								<div class="swiper-container gallery-thumbs">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide pro-img-small " v-for="(item,index) in bannerList" :key="index">
+											<div v-if="item.type=='video'">
+												<video :src="item.url"></video>
+											</div>
+											<div v-else class="cursor" :style="'background-image:url('+item.url+')'"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="f-cb pro-info-share lh15 fsize12 mt15 co66">
+								<div class="fl cursor" @click="showTiggle"><span class="list-ico share fl mr3"></span>分享</div>
+
+								<div class="bshare-custom" v-show="showState" @click="linnkShare">
+									<a title="分享到新浪微博" class="bshare-sinaminiblog shares"></a>
+									<a title="分享到人人网" class="bshare-renren shares"></a>
+									<a title="分享到豆瓣" class="bshare-douban shares"></a>
+								</div>
+								<div class="fl ml20 cursor" v-if="isCollect==0" @click="ICollect">
+									<span class="list-ico collect fl mr3 "></span>收藏商品
+								</div>
+								<div class="fl ml20 cursor" v-else @click="UnICollect">
+									<span class="list-ico collect fl mr3 on"></span>取消收藏
+								</div>
+							</div>
+						</div>
+						<div class="fl pro-top-tx ">
+							<div class="fsize24 lh42">{{info.name}}</div>
+							<div class="f-cb lh40 fsize12 pl15">
+								<div class="label co99 h40">价格</div>
+								<div class="fr pro-top-fr co99" v-if="originPrice">
+									<div class=" coe42008 fl lh40">¥  <span class="fsize24 bold ">{{originPrice}}</span></div>
+									<span class="ml12 text-line  mr20">¥{{price}}</span>
+								</div>
+								<div class="fr pro-top-fr co99" v-else>
+									<div class=" coe42008 fl lh40">¥  <span class="fsize24 bold ">{{price}}</span></div>
+								</div>
+							</div>
+							<div class="f-cb lh30 fsize12 pl15 por" v-if="coupon.length>0">
+								
+								<div class="label co99 h30">优惠</div>
+								<div class="fr pro-top-fr co99">
+									<div class="">
+										<span class="list-ico ico1 center mr10 coe42008 fl mt5 ">优惠券</span><span class="mr20">{{coupon[0].price}}元优惠券  满{{coupon[0].condition}}元可用</span> <span class="cursor co0679da" @click="Coupon_states">共{{coupon.length}}张优惠券 ></span>
+									</div>
+								</div>
+							</div>
+							<div class="f-cb lh30 fsize12 bor-bof2f4f6 pl15 ">
+								<div class="label co99 h30">配送</div>
+								<div class="fr pro-top-fr  co66">
+									<span class="mr20 co99">至</span> <span class="cursor mr20 ">{{province}}{{city}}</span>
+									<span class="mr5" v-if="info.isShipping==1">快递</span>
+									<span v-if="info.isShipping==1">免运费</span>
+								</div>
+							</div>
+
+							<div class="pt10 mt10 por" :class="[buyGoods?'':'bor-1-e42008']">
+								<div class="colse-btn" @click="buyGoods=true;numt='';groupId=''" v-if="!buyGoods"></div>
+								<div class="coe42008 mb5 f16 lh30 pl15" v-if="!buyGoods">请选择商品规格</div>
+								<div class="f-cb lh40 fsize12  pl15" v-for="(item,n) in typeAttrList">
+									<div class="label co99 h40">{{item.name}}</div>
+									<div class="fr pro-top-fr f-cb co66">
+										<div  :class="[subIndex[n] == index?'on':'',oItem.isShow?'':'disble']" @click="specificationBtn(item.name,oItem.name,n,$event,index)" v-for="(oItem,index) in item.valueList" class="item item1 center fl bor bor-cof4f4f4 mr10 mb10 cursor  rel">
+											{{oItem.name}}
+										</div>
+									</div>
+								</div>
+								<div class="f-cb lh36 fsize12  pl15">
+									<div class="label co99 40">数量</div>
+									<div class="fr pro-top-fr f-cb co66 pro-info">
+										<el-input-number v-model="quantity" :min="min" :max="max" label="描述文字"></el-input-number>
+									</div>
+								</div>
+								<table class="fsize12 lh45" v-if="goodsSingle.length>0 && numt!=1">
+									<tr class="bor-bof2f4f6">
+										<th width="233">部位</th>
+										<th>数据</th>
+										<th width="150">缩放量</th>
+									</tr>
+									<tr v-for="(item,index) in goodsSingle" class="co99  bor-bof2f4f6">
+										<td><span class="coe42008">*</span>{{item.name}}</td>
+										<td>{{item.value}}（{{item.group}}）</td>
+										<td>
+											<div class="f-cb pro-infos">
+												<el-input-number v-model="item.num" :max="max"  label="描述文字" @change="changs" @input="Change_buy(index,item.num)"></el-input-number>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div class="cofff lh40 right btn mt20 mr20 mb20" v-if="!buyGoods">
+									<div class="in-block center cursor ml5 on bge42008" v-if="info.isAssemble==1" @click="bugBtn">确定</div>
+								</div>
+							</div>
+							<div class="fsize12 co99 pl20 pt15 pb20">生产周期：{{info.cycle}}天</div>
+							<div class="cofff lh40 right btn" v-if="buyGoods">
+								<div class="in-block center cursor bg00a1ec ml5 on" @click="addCart"><span class="in-block list-ico ico4 vertical-4 mr5"></span>加入购物车</div>
+								<div class="in-block center cursor ml5 bgec7417 on" @click="Make_buy('0')"><span v-if="info.isOrder==1">单独定制</span><span v-else>立即购买</span></div>
+								<div class="in-block center cursor ml5 on" :class="[group_button?'bge42008':'bgb0adad']" v-if="info.isAssemble==1" @click="Group_buys('1')">立即拼团</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class=" pro-team pd15 bor bor-cof4f4f4" v-if="group_list.length>0 && info.isAssemble==1">
+						<div class="lh55 bor-bof2f4f6">{{group_list.length}}人正在拼单，我要参团</div>
+						<div class="fsize12 co66">
+							<table>
+								<tr class="bor-bof2f4f6 lh35 pt-3" v-for="(item,index) in group_list">
+									<td class="pt5 pb5"><img :src="item.user[0].avatar.url" class="img-cover fl mr10" v-if="item.user[0].avatar.url"><img v-else src="static/img/center-img3.jpg" class="img-cover fl mr10">{{item.user[0].nickname}}</td>
+									<td class="pt5 ">所需总数 <span class="coe42008">{{item.totalNumber}}</span> 人</td>
+									<td class="pt5 ">还差<span class="coe42008">{{item.totalNumber-item.groupNumber>0?item.totalNumber-item.groupNumber:0}}</span>人拼成，剩余 <span>{{item.createTime}}</span></td>
+									<td class="pt5 pb5 wid130 center" v-if="item.isRc==0"><div class="in-block center cursor  bge42008 cofff wid90" @click="Join_show(item)">去参团</div></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="fr pto-fr">
+					<div class="center fsize16 tit mb15">看了又看</div>
+					<a :href="'store_pro.html?id='+item.id+'&company='+company" target="_blank" class="pto-fr-con pd10 block mb10" v-for="item in like">
+						<img :src="item.thumb.url" class="img-cover block wid172im h160im">
+						<div class="fsize12 row2 co66 lh20 mb5 mt5 hovere42008">{{item.name}}</div>
+						<div class="fsize16 coe42008">¥{{item.price}}</div>
+					</a>
+				</div>
+			</div>
+			<div class="f-cb">
+				<div class="fl wid190">
+					<div class="bor bor-cof4f4f4 mb10">
+						<div class="pd10 lh40 bgf0f0f0"><a target="_blank" :href="'store.html?company='+company">{{companys.name}}</a><img src="static/img/list_ico7.png" class="vertical-4 cursor"></div>
+						<div class="pd10 pro-store lh24 pt10 pb12">
+							<div class="coe42008 fsize12 f-cb"><div class="fl co66 mr5">整体评价</div>
+								<img src="static/img/pro-info-1.png" class="fl mr5 mt5 wid15" v-if="companys.totalAvg>4.5"></span><span class="fl" v-if="companys.totalAvg>4">好评</span>
+								<img src="static/img/pro-info-2.png" class="fl mr5 mt5 wid15" v-if="companys.totalAvg>=4 && companys.totalAvg<=4.5"></span><span class="fl" v-if="companys.totalAvg>=3 && companys.totalAvg<=4">中评</span>
+								<img src="static/img/pro-info-3.png" class="fl mr5 mt5 wid15" v-if="companys.totalAvg<4"></span><span class="fl" v-if="companys.totalAvg<3">差评</span>
+							</div>
+							<div class="co66 fsize12 f-cb pro-stars">
+								<div class="fl mr5">描述相符</div> 
+								<el-rate
+				 					v-model="storyInfo.desAvg"
+								  	disabled
+								  	:colors="colors"
+								  	void-color="#e420084d"
+								  	score-template="{storyInfo.desAvg}">
+								</el-rate>
+
+								<span class="coe42008 ml5">{{storyInfo.desAvg}}</span>
+							</div>
+							<div class="co66 fsize12 f-cb pro-stars">
+							<div class="fl mr5">物流服务</div>
+								<el-rate
+				 					v-model="storyInfo.shipAvg"
+								  	disabled
+								  	:colors="colors"
+								  	void-color="#e420084d"
+								  	score-template="{storyInfo.shipAvg}">
+								</el-rate>
+								<span class="coe42008  ml5">{{storyInfo.shipAvg}}</span>
+							</div>
+							<div class="co66 fsize12 f-cb pro-stars">
+								<div class="fl mr5">服务态度</div>
+								<el-rate
+				 					v-model="storyInfo.serverAvg"
+								  	disabled
+								  	:colors="colors"
+								  	void-color="#e420084d"
+								  	score-template="{storyInfo.serverAvg}">
+								</el-rate>
+								<span class="coe42008  ml5">{{storyInfo.serverAvg}}</span>
+							</div>
+
+							<div class="f-cb center cofff lh30 mt5">
+								<a :href="'store.html?company='+info.companyId" target="_self" class="fl cursor wid80 bg000 cofff">进店逛逛</a>
+								<div class="fr cursor wid80 bge42008" @click="SCollect" v-if="shopCollect==0">关注店铺</div>
+								<div class="fr cursor wid80 bge42008" @click="UnCollect" v-else>取消关注</div>
+							</div>
+						</div>
+					</div>
+					<div class="bor bor-cof4f4f4 mb10">
+						<div class="pd10 lh40 bgf0f0f0">店内搜索</div>
+						<div class="pd10 pro-store lh24 pt10 pb12 fsize12 co66">
+							<table>
+								<tr>
+									<td>关键字：  </td>
+									<td><input type="text" class="bor bor-cof4f4f4 wid110 pd5" v-model="keyword" @keyup.enter="Search_keyword"></td>
+								</tr>
+								<tr>
+									<td>价   格：</td>
+									<td><input type="text" class="bor bor-cof4f4f4 wid48 pd5" v-model="min_price" placeholder="￥" @keyup.enter="Search_keyword"> - <input v-model="max_price" type="text" class="bor wid48 bor-cof4f4f4 pd5" placeholder="￥" @keyup.enter="Search_keyword"> </td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><div href="store_prolist.html?" class="cofff cursor bge42008 center lh24 wid48 mt5"  @click="Search_keyword">搜索</div></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="bor bor-cof4f4f4 mb10 fsize12 pro-store">
+						<div class="pd10 lh40 bor-bof2f4f6 fsize14">商品分类</div>
+						<div class="pd10 lh30 bor-bof2f4f6  co66">全部商品</div>
+						<div v-for="(item,index) in common">
+							<div class="pd10 lh30 co66 bor-bof2f4f6" @click="Categorys(index)">
+								<span class="list-ico cursor" :class="[ item.state ? 'ico5' : 'ico4' ]"></span>{{item.name}}
+							</div>
+							<div class="pd10 co66 f-cb lh20 pt5 pb5 bor-bof2f4f6" v-if="item.state">
+								<div class="fl mr20 cursor hovere42008" v-for="(it,index) in item.more" @click="Category_link(it.id)">{{it.name}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="fr wid990">
+					<div class="bor bor-cof4f4f4 pro-store-box mb20">
+						<div class="bgf0f0f0 lh40 f-cb tit"><div class="fl bgfff center wid120 rel">厂家推荐</div></div>
+						<div class="f-cb ">
+							<a :href="'store_pro.html?id='+item.id+'&company='+item.companyId" target="_blank" class="fl fsize12 co66 hovere42008 pb20 pl20 pr20 pt25 home-pro rel" v-for="(item,index) in list">
+								<img :src="item.thumb.url" class="img-cover mar-cen mb20 w100 block h160">
+								<div class=" row2 mb10 lh24 h45 fsize14">{{item.name}}</div>
+								<div class="coe42008  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+							</a>
+						</div>
+					</div>
+					<div class="bor bor-cof4f4f4 pro-store-box pb30">
+						<div class="bgf0f0f0 lh40 f-cb tit">
+							<div class="fl center wid120 rel bor-ri cursor" :class="item.id==state?'bgfff coe42008':''" v-for="item in stateList" @click="Title_switch(item.id)">{{item.name}}<span v-if="item.id==2">({{Ecount}})</span><span v-if="item.id==3">({{Qcount}})</span></div>
+						</div>
+						<!--商品详情-->
+						<div class="f-cb " v-if="state==1">
+							<div class="pl12 pr12 pt20" v-html="info.content"></div>
+						</div>
+						<!--累计评价-->
+						<div class="" v-if="state==2">
+							<div class="rel pro-eva" v-for="(item,index) in evaluate_List">
+								<div class="abs center pro-eva-tx fsize12 co66">
+									<img :src="item.user.avatar?item.user.avatar:'static/img/banner1.png'" class="img-cover mar-cen mb5">
+									<div class="">{{item.user.nickname}}</div>
+								</div>
+								<div class="bor-bof2f4f6 pb20">
+									<div class="mb5"><span class="list-ico " v-for="(score,index) in 5" :class="index<item.score?'ico2':'ico1'"></span></div>
+									<div class="co66 mb10 lh20">{{item.content}}</div>
+									<div class="f-cb mb5">
+										<a :href="it" class="mr5 fl mb5" target="_blank" v-for="it in item.photoUrl" :data-lightbox="'image-'+index">
+											<img :src="it.url" class="img-cover img">
+										</a>
+									</div>
+									<div class="co99 fsize12 mb15"><span class="mr20">{{item.createTime}}</span>{{item.goodsAttr}}</div>
+									<div class="co66 tx lh20 rel" v-if="item.reply"><span class="co99">商家回复：</span>{{item.reply}}</div>
+								</div>
+							</div>
+							<div class="center f18 pt50 pb75" v-if="!evaluate_List.length">暂无评价</div>
+						</div>
+
+						<!--问答专区-->
+						<div class="pd30 pt30  pro-answer" v-if="state==3">
+							<div class="center lh30 tit"><span class="list-ico in-block mr20"></span>有什么疑问，就提出你的问题吧！ <span class="coe42008 bor bor-e42008 cursor wid86 in-block ml30 " @click="Question_state">我要提问</span></div>
+							<div v-for="(item,index) in question_list" class="pro-answer-box fsize12 co66 rel bor-bof2f4f6 pt20 ">
+								<span class="abs ico1 cofff center">问</span>
+								<div class="f-cb lh20 mb10">
+									<img :src="item.user.avatar.url" class="img-cover mr15 fl" v-if="item.user.avatar.url"><img v-else src="static/img/center-img3.jpg" class="img-cover mr15 fl">{{item.user.nickname}}
+									<div class="fr co99">{{item.createTime}}</div>
+								</div>
+								<div class="rel pr50 fsize14 text lh20 mb20">
+									{{item.content}}
+									<div class="abs cursor" v-if="item.self==0"  @click="Question_reply_state(item.id,item.content)">回复</div>
+								</div>
+								<div class="" v-if="item.reply.id">
+									<div class="rel pro-answer-con">
+										<span class="abs ico2 cofff center">答</span>
+										<div class="f-cb lh20 mb10">
+											<img :src="item.reply.user.avatar.url" class="img-cover mr15 fl" v-if="item.reply.user.avatar.url">
+											<img src="static/img/center-img3.jpg" v-else class="img-cover mr15 fl">{{item.reply.user.nickname}}
+											<div class="fr co99">{{item.reply.createTime}}</div>
+										</div>
+										<div class="rel fsize14 text lh20 mb20">
+											{{item.reply.content}}
+										</div>
+									</div>
+								</div>
+								<div class="fsize12 co99 cursor pb20"><a target="_blank" :href="'store_pros.html?id='+id+'&company='+company+'&question='+item.id">全部{{item.replyCount}}个回答</a></div>
+							</div>
+						</div>
+						<div class="" v-if="state==2 && Ecount>0">
+							<el-pagination class="right mt30 pr20"
+							   next-text="下一页>>"
+							   prev-text="<<上一页"
+							   :page-size="limit"
+							   layout="prev,pager,next"
+							   @current-change="ECurrentPage"
+							   :total="Ecount">
+							</el-pagination>
+						</div>
+						<div class="" v-if="state==3 && Qcount>0">
+							<el-pagination class="right mt30 pr20"
+							   next-text="下一页>>"
+							   prev-text="<<上一页"
+							   :page-size="limit"
+							   layout="prev,pager,next"
+							   @current-change="QCurrentPage"
+							   :total="Qcount">
+							</el-pagination>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- 	<div class="">新浪微博</div> -->
+		
+		<!-- 问答 -->
+		<div class="back-black" :class="q_state?'back-black-show':''">
+			<div class="back-black-bg"></div>
+			<div class="back-black-con wid555 answer-back">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="Question_state">
+				<div class="back-black-tit">{{Q_A[Q_num].name}}</div>
+				<div class="pl20 pr20 pb25">
+					<div class="fsize12 co66 center mt20 mb15">{{Q_A[Q_num].title}}</div>
+					<div class="rel mb15">
+						<textarea placeholder="填写您的问题，4-100字" v-model="texts" maxlength="100" class="bor bor-cof4f4f4"></textarea>
+						<div class="abs tx fsize12 co99">{{texts.length}}/100</div>
+					</div>
+					<div class="right lh30">
+						<div class="in-block cofff bge42008 wid86 cursor center" @click="Release_problem">发布</div>
+						<div class="in-block bgf2f4f6 wid86 cursor center" @click="Question_state">取消</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 优惠券 -->
+		<div class="back-black" :class="coupon_state?'back-black-show':''">
+			<div class="back-black-bg"></div>
+			<div class="back-black-con pro-top-tx answer-back">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="Coupon_states">
+				<div class="back-black-tit">优惠券</div>
+				<div class="pb25 pt30 pro-top-tx">
+					<div class="pro-top-fr f-cb lh30 mar-cen mb10" v-for="(item,index) in coupon">
+						<span class="list-ico ico1 center mr10 coe42008 fl mt5">优惠券</span>
+						<span class="mr20 fl">{{item.price}}元优惠券  满{{item.condition}}元可用</span>
+						<span class="cursor co0679da fr" v-if="item.can==1" @click="Receive_coupon(index,item.id)">立即领取</span>
+						<span class="cursor co0679da fr" v-else>已领取</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 参团 -->
+		<div class="back-black on join" :class="Join_state?'back-black-show':''">
+			<div class="back-black-bg"></div>
+			<div class="back-black-con pro-top-tx answer-back">
+				<div class="icon" @click="Join_hidess"></div>
+				<div class="title">参与<span>{{Join_info.user[0].nickname}}</span>的拼单</div>
+				<div class="tit">仅剩<span>{{Join_info.totalNumber-Join_info.groupNumber}}</span>个名额，<span id="join"></span>后结束</div>
+				<div class="icons f-cb">
+					<div class="por" v-for="(item,index) in Join_info.user" v-if="index<9">
+						<div class="img" :style="'background:url('+item.avatar.url+') center/cover no-repeat'" v-if="item.avatar.url"></div>
+						<div class="img" style="background:url(static/img/center-img3.jpg) center/cover no-repeat" v-else></div>
+						<span v-if="index==0">拼主</span>
+					</div>
+					<div class="por"></div>
+				</div>
+				<div class="btn" @click="Join">参与拼单</div>
+			</div>
+		</div>
+		<div id="allmap" style="display:none"></div>
+		<my-footer></my-footer>
+		<fixed-top :group-id="storyInfo.customerServiceId"></fixed-top>
+
+	</div>
+
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments);
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/public/lightbox2/js/lightbox.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/store_pro.js"></script>
+	<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script>
+	<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+
+</body>
+</html>

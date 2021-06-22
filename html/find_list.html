@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="widdiv=device-widdiv,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="audivor" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="" v-if="isShow">
+		<header-top></header-top>
+		<header-find header-type="2" :header-list="category" :header-all-list="categoryAll" :type="type" category-Class="info"></header-find>
+
+		<div class="wid1190  pb75 pt35">
+			<div class="f-cb mb40">
+				<div class="find-list bgfff fl bor-bo bor-ri bor-cof4f4f4" v-for="item in list">
+					<div class="f-cb find-list-top mb10">
+						<a target="_blank" :href="'store.html?company='+item.company.id">
+							<img :src="item.company.logo.url" class="fl img-cover mr10">
+							<div class="row1 fl lh42 wid120 co66 title">{{item.company.name}}</div>
+						</a>
+						<div class="fr center cursor lh28" @click="collectInfo(item)">{{item.collect==1?'已关注':'+ 关注'}}</div>
+
+					</div>
+					<a target="_blank" :href="'find_info.html?id='+item.id">
+						<div class="f-cb find-list-img">
+
+							<img v-if="item.photo[0]" :src="item.photo[0].url" class="img-cover fl  ">
+							<div class="fr">
+								<img v-if="item.photo[1]" :src="item.photo[1].url" class="img-cover block">
+								<img v-if="item.photo[2]" :src="item.photo[2].url" class="img-cover block">
+							</div>
+						</div>
+						<div class="co66 mb10 mt15 tit">{{item.title}}</div>
+						<div class="fsize12 co99"><img src="static/img/list_ico12.png" class=" mr10 ">{{item.click}}人浏览</div>
+					</a>
+
+				</div>
+
+			</div>
+
+			<div class="nolist" v-if="total<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+
+			<el-pagination v-if="total>0"
+						   class="center mt30"
+						   next-text="下一页>>"
+						   prev-text="<<上一页"
+						   layout="prev, pager, next"
+						   @current-change="handleCurrentChange"
+						   :current-page.sync="pageNo"
+						   :page-size="limit"
+						   :total="total">
+			</el-pagination>
+
+		</div>
+
+		<my-footer></my-footer>
+
+
+
+
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/find_list.js"></script>
+
+</body>
+
+</html>

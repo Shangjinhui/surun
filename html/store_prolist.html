@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="store">
+	<div id="app" v-cloak="" v-if="isShow">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-store :story-info="storyInfo"></header-store>
+		<div class="wid1190 pb50 pt15">
+
+			<div class="bgfafafa mb10 f-cb lh40 pr20 select-ipt store-pro-top">
+				<div class="fl pd30 bor-rif2f4f6 bor-codfdfdf cursor hovere42008" :class="(sale==0&&isnew!=1)?'coe42008':'co66'" @click="changeSort(0)">综合排序</div>
+				<div class="fl  pd30 pr40 bor-rif2f4f6 cursor rel hovere42008" :class="(sale==1||sale==2)?'coe42008':'co66'" @click="changeSort(1)">销量 <span class="abs l58" :class="[sale==1?'defb':'',sale==2?'defp':'',sale!=1 || sale!=2?'def':'']"></span></div>
+				<div class="fl  pd30  bor-rif2f4f6 cursor rel hovere42008" :class="isnew==1?'coe42008':'co66'" @click="isnew=1;sale=0;page=1;getList()">新品</div>
+				<div class="fl  pd30 pr40 bor-rif2f4f6 cursor rel hovere42008"  :class="(sale==3||sale==4)?'coe42008':'co66'" @click="changeSort(2)">收藏 <span class="abs l58" :class="[sale==3?'defb':'',sale==4?'defp':'',sale!=3 || sale!=4?'def':'']"></span></div>
+				<div class="fl  pd30 pr40 bor-rif2f4f6 cursor rel hovere42008"  :class="(sale==5||sale==6)?'coe42008':'co66'" @click="changeSort(3)">价格 <span class="abs l58" :class="[sale==5?'defb':'',sale==6?'defp':'',sale!=5 || sale!=6?'def':'']"></span></div>
+				<div class="fl  pd30  bor-rif2f4f6 cursor rel hovere42008"  :class="sale==7?'coe42008':'co66'" @click="changeSort(4)">口碑</div>
+
+				<div class="fl  pl15 mr20">
+					<input type="text" placeholder="￥" v-model="min" @blur="iptblur(1)"> - <input type="text" placeholder="￥" v-model="max" @blur="iptblur(2)">
+				</div>
+				<div class="fl rel  search"><input type="text" placeholder="在当前结果中查询" v-model="searchTx"><span class="list-ico ico7 abs" @click="page=1,getList();"></span></div>
+				<div class="fl cofff bg00a1ec wid90 center ml12 cursor lh30 mt5 brad2" @click="page=1,getList();">搜索</div>
+			</div>
+
+			<div class="f-cb ">
+				<a target="_blank" :href="'store_pro.html?company='+item.companyId+'&id='+item.id" class="fl fsize12  pb15 pl10 pr10 pt10 co66 hovere42008 home-pro rel home-pro-hover tra" v-for="(item,index) in list">
+					<img :src="item.thumb.url" class="img-cover mar-cen mb20 w100 block h160">
+					<div class="coe42008  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+					<div class=" row2 mb10 lh24 h45 fsize14">{{item.name}}</div>
+				</a>
+			</div>
+
+			<div class="nolist" v-if="total<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+
+			<el-pagination v-if="total>0"
+						   class="center mt30"
+						   next-text="下一页>>"
+						   prev-text="<<上一页"
+						   layout="prev, pager, next"
+						   @current-change="handleCurrentChange"
+						   :current-page.sync="page"
+						   :page-size="limit"
+						   :total="total">
+			</el-pagination>
+
+		</div>
+
+
+
+
+		<my-footer></my-footer>
+
+		<!-- <fixed-top :only-service="true" :group-id="storyInfo.customerServiceId"></fixed-top> -->
+
+
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/store_prolist.js"></script>
+
+
+</body>
+
+</html>

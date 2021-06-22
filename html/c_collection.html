@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a href="index.html" target="_blank" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">我的收藏</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-34 f-12 c-666 por bor-b-f1f3f5 mb-10 c-666">
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==1 ? 'on cut':''" @click="store(1)">商品收藏</span>
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==2 ? 'on cut':''" @click="store(2)">店铺收藏</span>
+					<span class="fl mr-50 por tit pointer f-14" :class="store_num ==3 ? 'on cut':''" @click="store(3)">积分收藏</span>
+
+					<div class="fr w-163 h-29 lh-27 bor-dbdbdb bg-dbdbdb mt-17 mr-25">
+						<input type="text" class="fl w-130 h-27 f-12 bg-fff block pl-12 inptet" v-model="kw" placeholder="宝贝搜索" @keyup.enter="getList();">
+						<div class="fr w-30 h-27 pointer" style="background:#f4f4f4 url(static/img/center-img22.png) -127px 2px no-repeat" @click="getList()"></div>
+					</div>
+					<div class="fr mt-17 mr-10 w-70 lh-27 h-29 bor-dbdbdb pointer center f-12 c-666" @click="management()"><span v-if="manage_state">取消管理</span><span v-else>批量管理</span></div>
+					<div class="fr" v-if="manage_state">
+						<div class="fr mr-23  h-29 lh-29 mt-17 pointer"  @click="collectInfo(1)"><span class="h-29 fl w-20" style="background: url(static/img/center-img22.png) -5px -54px no-repeat"></span>删除</div>
+						<div class="fr mr-23 h-29 lh-29 mt-17 f-12 checks">
+							<template>
+							  <el-checkbox v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+							</template>
+						</div>
+					</div>
+				</div>
+				<div class="pl-34 pr-20 por" v-if="store_num==1">
+					<div class="f-cb bor-b-e4e4e4 child-list">                           
+						<div class="h-26 fl lh-26 f-14 childer-box inline-block mr-35 pointer rel" :class="item.id==type ? 'c-e42008 bor-b-e42008':''" v-for="(item , index) in typeList"><div @click="changeType(item.id)">{{item.name}}({{item.count}})</div>
+
+							<div v-if="item.id==1" class="childer f-cb pl-30 pr-20 abs l-0 bg-f8f8f8 w-900 pl-15 index-10 pt-20">
+								<div class="f-cb ovh" :class="showCat?'':'h32'">
+									<p class="fl w-120 row1 f-12 l-h15 mb-15" @click="changeCategory()" :class="categoryId==''?'c-e42008 bor-l-e42008 pl-10':'c-666'"><span class="inline-block">全部宝贝</span></p>
+									<p class="fl w-120 row1 f-12  l-h15 mb-15 cursor hovere42008 colls" @click="changeCategory(item)" :class="categoryId==item.id?'c-e42008 bor-l-e42008 pl-10':'c-666 '" v-for="item in categoryList">
+										<span class="inline-block"><img :src="item.photoUrl" class="fl img-contain w-18 h-18 mr5 img-gary">{{item.name}}</span>
+									</p>
+								</div>
+								<img :src="showCat?'static/img/head_ico9.png':'static/img/head_ico8.png'" v-if="categoryList.length>6" class="abs btn" @click="showCat=!showCat">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="f-cb pl-34 pr-20 mt-40" v-if="store_num==1">
+					<div class="f-cb">
+						<div class="fl w-225 pt-10 pl-10 pr-10 pb-15 por box-hover mb-20 ani3 cursor list" v-for="(item,index) in list">
+							<div class="f-cb abs l-0 t-0 w-100b index-5 store op-hover"  v-if="!manage_state">
+								<div @click="goStore(item.companyId)" class="fl block w-78 h-27 lh-27 center f-12 c-fff bg-e42008">进入店铺</div>
+								<div class="fr w-27 h-27 pointer" style="background:#b2b2b2 url(static/img/center-img22.png) -21px 2px no-repeat" @click="collectInfo(2,item.id)"></div>
+							</div>
+							<div @click="goInfo(index,item.id,item.companyId)" class="w-100b h-190 mb-10 block" :style="'background: url('+item.photoUrl+') center/cover no-repeat'"></div>
+							<div @click="checkChange(index)" class=" h-190 abs l-10 r-10 t-10" v-if="manage_state">
+								<div class="w-100b h-190 f-cb bg-rgba20" :class="item.checked?'bor-4-e42008':''"></div>
+								<div class="w-34 h-34 abs top-0 right-0 " v-if="!item.checked" style="background:url(static/img/center-img22.png) 0px -166px no-repeat"></div>
+								<div class="w-34 h-34 abs top-0 right-0" v-if="item.checked" style="background:url(static/img/center-img22.png) -166px -166px no-repeat"></div>
+							</div>
+							<div @click="goInfo(index,item.id,item.companyId)" class="f-cb mb-5 block">
+								<div class="inline-block fl c-e42008 f-16">¥{{item.price}}</div>
+								<div class="inline-block fr f-12 c-999">{{item.saleCount}}人下单</div>
+							</div>
+							<div @click="goInfo(index,item.id,item.companyId)"  class="f-14 c-666 l-h15 h-42 f-over block tit">{{item.name}}</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="f-cb pl-34 pr-20" v-else-if="store_num==2">
+					<div class="f-cb pt-20 bor-b-f2f4f6 pb-10 rel list" v-for="(item,index) in list">
+						<div   class="fl w-400">
+							<a :href="'store.html?company='+item.id" target="_blank" class="fl w-70 h-70 mr-10" :style="'background: url('+item.logoUrl+') center/cover no-repeat'"></a>
+							<div class="fl w-315">
+								<div class="c-333 f-14 l-hh20 f-cb mb-5">
+									<a :href="'store.html?company='+item.id" target="_blank" class="inline-block mr-5 max-155 fl line color">{{item.name}}</a>
+									<span class="inline-block w-20 h-20 fl cursor" style="background: url(static/img/center-img22.png) -107px -2px no-repeat" @click="goService(item.customerServiceId)">&nbsp;</span>
+									<!--<span class="fr inline-block w-20 h-20 pointer" style="background: url(static/img/center-img22.png) -81px -1px no-repeat">&nbsp;</span>-->
+									<span class="fr inline-block w-20 h-20 mr-10 pointer" @click="collectInfo(2,item.id)" style="background: url(static/img/center-img22.png) -56px -1px no-repeat">&nbsp;</span>
+								</div>
+								<a :href="'store.html?company='+item.id" target="_blank" class="f-12 c-666 l-h15 w-200">
+									主营: {{item.productType}}
+								</a>
+							</div>
+						</div>
+						<div class="fr w-480" v-if="item.goodsData&&item.goodsData.length>0">
+							<div class="f-14 c-333 l-h12 mb-15">商家推荐</div>
+							<div class="f-cb ovh " :class="item.isShow?'':'h-150'">
+								<a :href="'store_pro.html?company='+item.id+'&id='+it.id" target="_blank" class="w-110 fl mr-13 mb-20 img-list c-666 hovere42008" v-for="(it,ix) in item.goodsData">
+									<div class="w-110 h-110 mb-5" :style="'background:url('+it.photoUrl+') center/cover no-repeat'"></div>
+									<div class="f-12  l-h12 ">¥{{it.price}}</div>
+								</a>
+							</div>
+							<div class="f-cb" v-if="item.goodsData.length>4">
+								<div class="f-12 fr  h-22 lh-20 w-74 center pointer" @click="showPro(index)" :class="item.isShow?'coe42008 bor-ff0000':'bor-dbdbdb c-666'"><span v-if="!item.isShow">展开热销</span><span v-if="item.isShow">收起热销</span></div>
+							</div>
+						</div>
+						<div @click="checkChange(index)" class=" abs l-0 top-0 w100 bottom-0" v-if="manage_state">
+							<div class="w100 hei100  bg-rgba20" :class="item.checked?'bor-4-e42008':''"></div>
+							<div class="w-34 h-34 abs top-0 right-0 " v-if="!item.checked" style="background:url(static/img/center-img22.png) 0px -166px no-repeat"></div>
+							<div class="w-34 h-34 abs top-0 right-0" v-if="item.checked" style="background:url(static/img/center-img22.png) -166px -166px no-repeat"></div>
+						</div>
+					</div>
+				</div>
+				<div class="f-cb pl-34 pr-20 mt-40" v-else>
+					<div class="f-cb">
+						<div class="fl w-225 pt-5 pl-23 pr-22 pb-10 por box-hover mb-30 ani3 cursor" v-for="(item,index) in list">
+							<div class="f-cb abs l-0 t-0 w-100b index-5 store op-hover"  v-if="!manage_state">
+								<div class="fr w-27 h-27 pointer" style="background:#b2b2b2 url(static/img/center-img22.png) -21px 2px no-repeat" @click="collectInfo(2,item.id)"></div>
+							</div>
+							<div @click="goInfo(index,item.id)" class="w-180 h-180 mb-5 block" :style="'background: url('+item.photoUrl+') center/cover no-repeat'"></div>
+							<div @click="checkChange(index)" class="w-180 h-180 abs l-23  t-5" v-if="manage_state">
+								<div class="w-100b h-180 f-cb bg-rgba20" :class="item.checked?'bor-4-e42008':''"></div>
+								<div class="w-34 h-34 abs top-0 right-0 " v-if="!item.checked" style="background:url(static/img/center-img22.png) 0px -166px no-repeat"></div>
+								<div class="w-34 h-34 abs top-0 right-0" v-if="item.checked" style="background:url(static/img/center-img22.png) -166px -166px no-repeat"></div>
+							</div>
+							<div @click="goInfo(index,item.id)" class="f-cb mb-5 block">
+								<div class="inline-block fl c-e42008 f-16">{{item.price}}积分</div>
+								<div class="inline-block fr f-12 c-999">{{item.saleCount}}人下单</div>
+							</div>
+							<div @click="goInfo(index,item.id)"  class="f-14 c-666 l-h15 h-42 f-over block">{{item.name}}</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="nolist  pb60" v-if="list&&list.length<=0">
+					<img src="static/img/no.png" alt="">
+					<div>暂无数据</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments);
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_collection.js"></script>
+</body>
+</html>

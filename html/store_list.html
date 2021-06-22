@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-home ></header-home>
+
+		<div class="wid1190 pb75 store-list">
+			<div class="f-cb">
+				<div class="fl wid990">
+					<div class="co66 lh50">找到相关店铺 <span class="coe42008">{{total}}</span> 家</div>
+					<div class="">
+						<div class="f-cb lh40 pr20 select-ipt bor-bof2f4f6 bgfff">
+							<div class="fl  pd30 bor-rif2f4f6 cursor" :class="!point&&!sale?'coe42008':'co66'" @click="point='';sale='';getList()">综合排序</div>
+							<div class="fl  pd30 bor-rif2f4f6 cursor rel hovere42008" :class="sale==1 || sale==2?'coe42008':'co66'" @click="getnav()">销量<span class="abs" :class="[sale==1?'defb':'',sale==2?'defp':'',!sale?'def':'']"></span></div>
+							<div class="fl  pd30 bor-rif2f4f6 cursor hovere42008" :class="point==1?'coe42008':'co66'" @click="point=1;sale='';getList()">信用</div>
+							<!--<div class="fr"><span class="coe42008">1</span>/10-->
+								<!--<img src="static/img/list_ico1.png" class="cursor ml12 opa6"><img src="static/img/list_ico2.png"  class="cursor"></div>-->
+						</div>
+
+						<div class="fsize12 co66 pd15 f-cb lh40 bor-bof2f4f6 bgfff">
+							<div class="cursor fl mr20" @click="haveCollect=haveCollect==1?'':'1';page=1;getList()"><img :src="haveCollect==1?'static/img/list_ico5.png':'static/img/list_ico4.png'" class="mr5 vertical-5">收藏和购买过</div>
+						</div>
+
+						<div  class="f-cb block pr12 bor-bof2f4f6 bgfff" v-for="item in list">
+							<a target="_blank" :href="'store.html?company='+item.id" class="fl store-list-fl">
+								<div class="f-cb mb40">
+									<img :src="item.logo.url" class="fl img-cover">
+									<div class="fr co0679da lh20">
+										<div>{{item.name}}</div>
+										<div class="row1 fsize12"><span class="co99">卖家:</span> {{item.nickname}}</div>
+										<div class="row1 fsize12"><span class="co99">主营:</span> {{item.productType}}</div>
+									</div>
+								</div>
+								<div class="co99 fsize12">销量<span class="co66">{{item.sum}}</span>  共<span class="co66">{{item.count}}</span>件宝贝 </div>
+							</a>
+							<div class="fr store-list-fr pt20">
+								<a target="_blank" :href="'store_pro.html?company='+item.id+'&id='+it.id" class="fl co66 fsize12" :class="ix<3?'mr15':''" v-for="(it,ix) in item.goods" v-if="ix<=3">
+									<img :src="it.thumb.url" class="block img-cover mb10">
+									<div>¥{{it.price}}</div>
+								</a>
+							</div>
+						</div>
+
+
+						<div class="nolist" v-if="total<=0 && list">
+							<img src="static/img/no.png" alt="">
+							<div>暂无数据</div>
+						</div>
+
+						<el-pagination class="center mt30" v-if="total>0"
+									   next-text="下一页>>"
+									   prev-text="<<上一页"
+									   layout="prev, pager, next"
+									   @current-change="handleCurrentChange"
+									   :current-page.sync="page"
+									   :page-size="limit"
+									   :total="total">
+						</el-pagination>
+
+					</div>
+				</div>
+
+				<div class="fr pt20 store-list-img ">
+					<div class=" lh40 pd15 bgfff">厂家推荐</div>
+					<a target="_blank" :href="'store_pro.html?company='+item.companyId+'&id='+item.id" class=" bgfff co66 fsize13 lh30 pb5 block" v-for="item in goodsList">
+						<img :src="item.thumb.url" class="block img-cover ">
+						<div class="row1 pd15">{{item.name}}</div>
+					</a>
+				</div>
+			</div>
+
+
+
+		</div>
+
+
+
+
+		<my-footer></my-footer>
+
+		<!--<fixed-top></fixed-top>-->
+
+	</div>
+	<!--客服-->
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+	</script>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/store_list.js"></script>
+
+
+</body>
+
+</html>

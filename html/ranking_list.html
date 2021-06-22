@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="" v-if="isShow">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-find header-type="6" :header-list="category" :header-all-list="categoryAll" :type="type"></header-find>
+		<div class="wid1190 pb75 pt25">
+			<div class="f-cb ">
+				<a  target="_blank" :href="'store_pro.html?company='+item.companyId+'&id='+item.id" class="fl fsize12 bgfff pb15 pl10 pr10 pt10 bor-bo bor-ri bor-cof4f4f4 co66 hovere42008 home-pro rel" v-for="(item,index) in list">
+					<div class="abs home-pro-ico cofff center" :class="[{'ico1':index==0},{'ico2':index==1},{'ico3':index==2}]" v-if="pageNo==1&&index<10">{{index+1}}</div>
+					<img :src="item.thumb.url" class="img-cover mar-cen mb20 w100 block h160">
+					<div class="coe42008  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+					<div class=" row2 mb10 lh24 h45 fsize14">{{item.name}}</div>
+					<div class="f-cb home-pro-tag mb5 h20 ovh">
+						<div class="fl red mr5" v-if="item.label1">{{item.label1}}</div>
+						<div class="fl blue mr5" v-if="item.label2">{{item.label2}}</div>
+						<div class="fl green" v-if="item.label3">{{item.label3}}</div>
+					</div>
+				</a>
+			</div>
+			<div class="nolist" v-if="total<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+			<el-pagination v-if="total>0"
+			   class="center mt30"
+			   next-text="下一页>>"
+			   prev-text="<<上一页"
+			   layout="prev, pager, next"
+			   @current-change="handleCurrentChange"
+			   :current-page.sync="pageNo"
+			   :page-size="limit"
+			   :total="total">
+			</el-pagination>
+		</div>
+		<my-footer></my-footer>
+		<fixed-top></fixed-top>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/ranking_list.js"></script>
+
+
+</body>
+
+</html>

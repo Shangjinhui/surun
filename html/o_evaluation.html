@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="order">
+		<header-top></header-top>
+		<div class="bg-fff shadow-2 mb-25">
+			<div class="w-1190 auto f-cb pt-15 pb-12" style="background:url(static/img/center-img38.jpg) 820px 0 no-repeat">
+				<a href="index.html" tabindex="_blank"><img src="static/img/logo.png" alt="" class="fl ml-25"></a>
+				<img src="static/img/center-img49.png" class="fl ml-30 mt-30">
+			</div>
+		</div>
+		<div class="crumbs w-1190 l-h12 mb-55 f-12 c-999"><a href="index.html" tabindex="_blank"  class="c-999 mr-5 c-hover">首页</a>><a tabindex="_blank" href="c_exchange.html" class="c-999 mr-5 ml-5 c-hover">我的订单</a>><a href="" class="c-999 mr-5 ml-5 c-hover">评价</a></div>
+		<div class="w-1190 mb-90 rate">
+			<table class="f-12 c-666 tables top">
+				<tr class="h-38 lh-38 bg-fcfcfd tables-bor">
+					<th class="pl-20 w-450 left f-inherit" colspan="3">店铺评价</th>
+				</tr>
+				<tr class="tables-bor pt-50" v-for="item in list">
+					<td width="130px" class="center pt-50 bor-r-0 bor-b-0 bor-t-0">
+						<div class="w-80 h-80 bor-t-f1f3f5 inline-block" :style="'background: url('+item.thumb+') center center / cover no-repeat;'"></div>
+					</td>
+					<td width="300px" class="pt-50 bor-l-0 bor-r-0 bor-b-0 bor-t-0">
+						<div class="l-h14 f-12 c-666 mb-5 w-260">{{item.goodsName}}</div>
+						<div class="f-12 c-999 l-h15 w-260">{{item.goodsAttr}}</div>
+					</td>
+					<td class="pt-50 pb-30 bor-l-0 bor-b-0 bor-t-0">
+						<div class="f-cb pl-25 bor-l-e1e3e5">
+							<div class="w-290 h-20 lh-20  mb-15">
+								<span class="fl f-12 c-666 w-64">描述相符</span>
+								<div class="f-cb rate-value">
+									<el-rate v-model="score" :colors="colors"></el-rate>
+								</div>
+							</div>
+							<div class="lh-20 f-cb mb-10">
+								<span class="fl f-12 c-666 w-64">商品评价</span>
+								<div class="f-cb w-600 fl textarea">
+									<el-input
+											type="textarea"
+											:rows="2"
+											placeholder="请输入内容"
+											v-model="content">
+									</el-input>
+								</div>
+							</div>
+							<div class="f-cb">
+								<span class="fl f-12 c-666 w-64 inline-block">&nbsp;</span>
+								<div class="upload-img mb-5 fl">
+									<el-upload
+											:action="uploadUrl"
+											:limit="5"
+											:headers="{Platform: 2}"
+											:on-success="imgSuccess"
+											:before-upload="beforeAvatarUpload"
+											list-type="picture-card"
+											:on-preview="handlePictureCardPreview"
+											:on-remove="handleRemove">
+										<i class="el-icon-plus"></i>
+									</el-upload>
+									<el-dialog :visible.sync="dialogVisible">
+										<img width="100%" :src="dialogImageUrl" alt="">
+									</el-dialog>
+								</div>
+							</div>
+							<div class="f-cb">
+								<span class="fl f-12 c-666 w-64 inline-block">&nbsp;</span>
+								<div class="f-12 c-999 l-h16 fl">最多上传5张</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr class="tables-bor ">
+					<td colspan="3" class="bor-t-0">
+						<div class="pl-530 pt-50 pb-80">
+							<div class="f-cb checkbox mb-35">
+								<template>
+									<el-checkbox v-model="checked" class="f-12">匿名</el-checkbox>
+								</template>
+								<span class="f-12 c-999 ml-15 inline-block">你写的评价会已匿名的方式发布</span>
+							</div>
+							<div class="w-160 h-40 lh-40 center c-fff f-14 bg-e42008" @click="evaluate">发表评价</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/o_evaluation.js"></script>
+</body>
+</html>

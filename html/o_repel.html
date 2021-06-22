@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="order">
+		<header-top></header-top>
+		<div class="bg-fff shadow-2 mb-25">
+			<div class="w-1190 auto f-cb pt-15 pb-12" style="background:url(static/img/center-img38.jpg) 820px 0 no-repeat">
+				<a href="index.html" target="_blank"><img src="static/img/logo.png" alt="" class="fl ml-25"></a>
+				<img src="static/img/center-img49.png" class="fl ml-30 mt-30">
+			</div>
+		</div>
+		<div class="crumbs w-1190 l-h12 mb-55 f-12 c-999"><a href="index.html" target="_blank" class="c-999 mr-5 c-hover">首页</a>><a target="_blank" :href="ctype==2?'c_exchange.html':'c_order.html'" class="c-999 mr-5 ml-5 c-hover">我的订单</a>><a href="" class="c-999 mr-5 ml-5 c-hover">申请售后</a></div>
+		<div class="w-1190 mb-45 rate">
+			<table class="f-12 c-666 tables-bor tables top">
+				<tr>
+					<td class="pt-15 pb-15">
+						<div class="f-cb pl-20">
+							<div class="fl w-80 h-80 bor-e1e3e5" :style="'background: url('+info.thumb+') center center / cover no-repeat;'"></div>
+							<div class="fl w-980 ml-25 l-h16">
+								<div class="mb-3">{{info.goodsName}}</div>
+								<div class="c-999">{{info.goodsAttr}}</div>
+								<div class="c-999" v-if="info.orderAttribute"><span v-for="itattr in info.orderAttribute" class="mr10">{{itattr.goodsAttribute}}:{{itattr.totalValue}}{{itattr.group}}</span></div>
+
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="pt-30 pb-50">
+						<div class="f-14 c-666 l-h16 pl-20 mb-15">选择服务类型</div>
+						<div class="f-cb pl-20">
+							<a target="_blank" :href="'o_refund.html?type=1&ctype='+ctype+'&id='+id" class="fl block w-450 h-120 bor-e1e3e5 pt-35 por pl-110 mr-25 b-radio-6">
+								<div class="abs l-40 t-34 w-50 h-50" style="background:url(static/img/center-img24.png) 0px 0 no-repeat"></div>
+								<div class="c-333 f-18 bold mb-10 l-h12">我要退款(无需退货)</div>
+								<div class="f-14 c-999 l-h12">没收到货,或与卖家协商同意不用退货只退款</div>
+							</a>
+							<a target="_blank" :href="'o_refund.html?type=2&ctype='+ctype+'&id='+id" class="fl block w-450 h-120 bor-e1e3e5 pt-35 por pl-110 b-radio-6">
+								<div class="abs l-40 t-34 w-50 h-50" style="background:url(static/img/center-img24.png) 0px 0 no-repeat"></div>
+								<div class="c-333 f-18 bold mb-10 l-h12">我要退货退款</div>
+								<div class="f-14 c-999 l-h12">已收到货,需要退还收到的货物</div>
+							</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/o_repel.js"></script>
+</body>
+</html>

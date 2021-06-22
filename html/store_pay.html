@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="widdiv=device-widdiv,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="audivor" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="center-page ">
+	<div id="app" v-cloak="" class="bgfff">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+
+		<div class="bgfff header h110">
+			<div class="f-cb wid1190 header-cen">
+				<a href="index.html" target="_blank"><img src="static/img/logo.png" alt="" class="fl ml-25"></a>
+				<div class="fl fsize24 co99 lh110">付款</div>
+
+				<div class="fr co99 header-confirm center">
+					<div class="fl on">
+						<div class="ico ">1</div>
+						<div>我的定制</div>
+					</div>
+					<div class="fl on">
+						<div class="ico">2</div>
+						<div>确认订单</div>
+					</div>
+					<div class="fl on">
+						<div class="ico">3</div>
+						<div>付款</div>
+					</div>
+					<div class="fl">
+						<div class="ico">4</div>
+						<div>支付成功</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wid1190 pb75 pt30">
+
+
+			<div class="fsize16 mb15"><span class="bold">支付方式</span></div>
+			<div class="bor bor-cof4f4f4 mb30 pd15 pt50 pb30">
+				<div class="f-cb confirm-pay lh40 mb25 pl-50">
+					<div class="fl cursor mr-70" @click="payType=1"><span class="list-ico fl" :class="payType==1?'ico2':'ico1'"></span><span class="list-ico ico3"></span>微信支付</div>
+					<div class="fl cursor mr-70" @click="payType=2"><span class="list-ico fl" :class="payType==2?'ico2':'ico1'"></span><span class="list-ico ico4"></span>支付宝支付</div>
+					<!--<div class="fl cursor" @click="payType=3"><span class="list-ico ico1 fl" :class="payType==3?'ico2':'ico1'"></span><span class="list-ico ico5"></span>银联支付</div>-->
+				</div>
+				<!--<div class="center bgf4f4f4 store-no-bank co66" v-if="payType==3">暂未添加银行卡，<a href="">前去绑定</a></div>-->
+			</div>
+
+			<div class="fsize16 mb15"><span class="bold">商品信息</span></div>
+			<div class="bor bor-cof4f4f4 store-confirm fsize12 co66 center mb30">
+				<table>
+					<tr class="bor-bof2f4f6 lh40 ">
+						<th class="left bor-rif2f4f6" width="450">店铺：{{company.companyName}}<img src="static/img/list_ico7.png" class="ml12 vertical-4"></th>
+						<th class="bor-rif2f4f6" width="334">服务信息</th>
+						<th>单价</th>
+						<th>数量</th>
+						<th>小计</th>
+					</tr>
+					<tr class="lh20 bor-bof2f4f6" v-for="itpro in orderDetail">
+						<td class="left bor-rif2f4f6 f-cb">
+							<img :src="itpro.thumb" class="fl img img-cover bor bor-cof4f4f4 mr-25">
+							<div class="fl wid290">
+								<div class="">{{itpro.goodsName}}</div>
+								<div>{{itpro.goodsAttr}}</div>
+								<div v-if="itpro.goodsAttribute"><span v-for="it in itpro.goodsAttribute" class="mr10">{{it.name}}:{{it.totalValue}}{{it.group}}</span></div>
+							</div>
+						</td>
+						<td class="bor-rif2f4f6">支付完成后尽快为您发货 </td>
+						<td class="co33">￥{{itpro.price}}</td>
+						<td class="co66">
+							{{itpro.quantity}}
+							<!--<div class="ipt-num f-cb  in-block">-->
+								<!--<el-input-number v-model="quantity" :min="1" :max="goodInfo.stock*1" label="描述文字"></el-input-number>-->
+							<!--</div>-->
+						</td>
+						<td class="coe42008">￥{{itpro.totalPrice}}</td>
+					</tr>
+
+				</table>
+			</div>
+
+			<div class="fsize16 mb20" ><span class="bold">结算信息</span></div>
+			<div class="bor bor-cof4f4f4 fsize12 confirm-coupon co66 mb40" >
+				<div class="right pt20 lh20 pd30 pb20">
+					<div><span class="coe42008">{{info.totalQuantity}}</span> 件商品 总计：<div class="in-block wid105 co33">¥{{orderInfo.totalFee}}</div></div>
+					<div>运费：<div class="in-block wid105 co33">¥{{orderInfo.shipFee}}</div></div>
+					<div>优惠：<div class="in-block wid105 co33">-¥{{parseFloat(orderInfo.platformCouponReduceFee)+parseFloat(orderInfo.couponReduceFee)}}</div></div>
+				</div>
+			</div>
+
+
+
+			<div class="right">
+				<div class="co99 mb10">应付金额：<span class="coe42008 fsize18 ml20">¥{{orderInfo.payFee}}</span></div>
+				<div class="co99 mb10">收货信息：<div class="co66 inline-block "><span class="mr10">{{orderInfo.contact}}</span><span class="mr10">{{orderInfo.phone}}</span><span> {{orderInfo.province}}{{orderInfo.city}}{{orderInfo.area}}{{orderInfo.info}}</span></div></div>
+				<div class="co99 mb15">支付方式：<span class="co66"><i v-if="payType==1">微信</i><i v-if="payType==2">支付宝</i><i v-if="payType==3">银联</i></span></div>
+
+				<div class="bge42008 cofff center cursor lh40 wid105 in-block" @click="payMent">确认支付</div>
+			</div>
+
+		</div>
+
+		<div class="back-black back-black-show" v-show="ewmShow" @click="hideEwm">
+			<div class="back-black-bg"></div>
+			<div class="back-ewm">
+				<div id="code" class=""></div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+
+
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/public/js/qrcode.js"></script>
+
+	<script src="static/js/store_pay.js"></script>
+
+</body>
+
+</html>

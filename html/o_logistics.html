@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="order">
+		<header-top></header-top>
+		<div class="bg-fff shadow-2 mb-25">
+			<div class="w-1190 auto f-cb pt-15 pb-12" style="background:url(static/img/center-img38.jpg) 820px 0 no-repeat">
+				<a href="index.html" tabindex="_blank"><img src="static/img/logo.png" alt="" class="fl ml-25"></a>
+				<img src="static/img/center-img49.png" class="fl ml-30 mt-30">
+			</div>
+		</div>
+		<div class="crumbs w-1190 l-h12 mb-55 f-12 c-999"><a href="index.html" tabindex="_blank" class="c-999 mr-5 c-hover">首页</a>><a tabindex="_blank" :href="ctype==2?'c_exchange.html':'c_order.html'" class="c-999 mr-5 ml-5 c-hover">我的订单</a>><a href="" class="c-999 mr-5 ml-5 c-hover">物流详情</a></div>
+
+		<div class="w-1190 bor-dbdbdb pb-160 mb-65">
+			<div class="bg-f9f9f9 bor-b-dbdbdb h-36 lh-36 pl-15 f-12 c-333 mb-55">包裹信息</div>
+			<div class="w-765 auto">
+				<!--<div class="f-cb f-14 c-333 l-h14 center">
+					<div class="fl ">
+						<div class="w-62 h-62 b-radio-50 mb-5" style="background:#e42008 url(static/img/center-img23.png) 13px 12px no-repeat"></div>
+						<div class="">待揽件</div>
+					</div>
+					<div class="fl h-62 w-170"  style="background: url(static/img/center-img23.png) -14px -38px no-repeat"></div>
+					<div class="fl ">
+						<div class="w-62 h-62 b-radio-50 mb-5" style="background:#e42008 url(static/img/center-img23.png) -150px 11px no-repeat"></div>
+						<div class="">运输</div>
+					</div>
+					<div class="fl h-62 w-170"  style="background: url(static/img/center-img23.png) -14px -38px no-repeat"></div>
+					<div class="fl ">
+						<div class="w-62 h-62 b-radio-50 mb-5" style="background:#e42008 url(static/img/center-img23.png) -95px 11px no-repeat"></div>
+						<div class="">派送</div>
+					</div>
+					<div class="fl h-62 w-170"  style="background: url(static/img/center-img23.png) -14px -38px no-repeat"></div>
+					<div class="fl ">
+						<div class="w-62 h-62 b-radio-50 mb-5" style="background:#e42008 url(static/img/center-img23.png) -39px 11px no-repeat"></div>
+						<div class="">签收</div>
+					</div>
+				</div>-->
+				<div class="f-14 c-333 l-h16 mt-90 pl-12">
+					<ul v-for="(item,index) in info.ship">
+						<li class="por f-cb pl-30 pb-10" v-for="(it,idx) in item.children">
+							<i class="inline-block w-1 bg-d8d8d8 h-100b abs l-5 t-10"></i>
+							<span class="w-11 h-11 abs l-0 t-7 index-5" v-if="index==0&&idx==0" style="background:url(static/img/center-img23.png) -5px -123px no-repeat"></span>
+							<span class="w-11 h-11 abs l-0 t-4 index-5" v-else style="background:url(static/img/center-img23.png) -32px -123px no-repeat"></span>
+							<div class="fl mr-15 " :class="index==0&&idx==0?'f-16 c-e42008':''">{{it.time}}</div>
+							<div class="fl " :class="index==0&&idx==0?'f-16 c-e42008 w-510':'wid555'">{{it.context}}</div>
+						</li>
+						<!--<li class="por f-cb pl-30 pb-10">
+							<i class="inline-block w-1 bg-d8d8d8 h-100b abs l-5 t-10"></i>
+							<span class="w-11 h-11 abs l-0 t-7 index-5" v-if="num==2" style="background:url(static/img/center-img23.png) -5px -123px no-repeat"></span>
+							<span class="w-11 h-11 abs l-0 t-4 index-5" v-else style="background:url(static/img/center-img23.png) -32px -123px no-repeat"></span>
+							<div class="fl mr-15">2015-10-23- 11:01:41</div>
+							<div class="fl">的萨达方式的飞洒地方士大夫士大夫士大夫</div>
+						</li>
+						<li class="por f-cb pl-30 pb-10">
+							<i class="inline-block w-1 bg-d8d8d8 h-100b abs l-5 t-10"></i>
+							<span class="w-11 h-11 abs l-0 t-7 index-5" v-if="num==3" style="background:url(static/img/center-img23.png) -5px -123px no-repeat"></span>
+							<span class="w-11 h-11 abs l-0 t-4 index-5" v-else style="background:url(static/img/center-img23.png) -32px -123px no-repeat"></span>
+							<div class="fl mr-15">2015-10-23- 11:01:41</div>
+							<div class="fl">的萨达方式的飞洒地方士大夫士大夫士大夫</div>
+						</li>
+						<li class="por f-cb pl-30 pb-10">
+							<i class="inline-block w-1 bg-d8d8d8 h-100b abs l-5 t-10"></i>
+							<span class="w-11 h-11 abs l-0 t-7 index-5" v-if="num==4" style="background:url(static/img/center-img23.png) -5px -123px no-repeat"></span>
+							<span class="w-11 h-11 abs l-0 t-4 index-5" v-else style="background:url(static/img/center-img23.png) -32px -123px no-repeat"></span>
+							<div class="fl mr-15">2015-10-23- 11:01:41</div>
+							<div class="fl">的萨达方式的飞洒地方士大夫士大夫士大夫</div>
+						</li>
+						<li class="por f-cb pl-30">
+							<i class="inline-block w-1 bg-d8d8d8 h-100b abs l-5 t-10"></i>
+							<span class="w-11 h-11 abs l-0 t-7 index-5" v-if="num==5" style="background:url(static/img/center-img23.png) -5px -123px no-repeat"></span>
+							<span class="w-11 h-11 abs l-0 t-4 index-5" v-else style="background:url(static/img/center-img23.png) -32px -123px no-repeat"></span>
+							<div class="fl mr-15">2015-10-23- 11:01:41</div>
+							<div class="fl">的萨达方式的飞洒地方士大夫士大夫士大夫</div>
+						</li>-->
+					</ul>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/o_logistics.js"></script>
+</body>
+</html>

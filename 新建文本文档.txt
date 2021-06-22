@@ -1,0 +1,10 @@
+http://demo2.yunmofo.cn/surun_shop/html/                     客户端
+https://demo2.yunmofo.cn/surun_shop/h5_admin/login.html       商家端
+https://demo2.yunmofo.cn/surun_shop/bocadmin/index.php/      总后台
+
+正式     http://mysurun.com/
+
+
+测试114.215.193.225  wechat   bocweb2017!@# 端口：2121 
+正式124.160.158.140 zcys190726  zcyg190726                        mysurun.com
+                 

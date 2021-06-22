@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a target="_blank" href="index.html" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" class="c-999 mr-5 ml-5 c-hover"  target="_blank">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">我的积分</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-35 f-14 c-666 por bor-b-f1f3f5 mb-35 c-666">
+					<span class="fl mr-50 por tit pointer" :class="type ==0 ? 'on':''" @click="type=0;pageNo=1;getList()">我的积分(<span class="c-e42008">{{point}}</span>)</span>
+					<span class="fl mr-50 por tit pointer" :class="type ==1 ? 'on':''" @click="type=1;pageNo=1;getList()">收入</span>
+					<span class="fl mr-50 por tit pointer" :class="type ==2 ? 'on':''" @click="type=2;pageNo=1;getList()">支出</span>
+				</div>
+				<div class="f-cb pl-35 pr-40">
+					<table>
+						<tr class="bor-dbdbdb bg-fcfcfd">
+							<th class="h-38 lh-36 f-12 c-333 left  pl-7" colspan="2">来源/用途</th>
+							<th class="h-38 lh-36 f-12 c-333 w-220">交易时间</th>
+							<th class="h-38 lh-36 f-12 c-333 w-170">积分变化</th>
+							<!--<th class="h-38 lh-36 f-12 c-333 w-220">备注</th>-->
+						</tr>
+						<tr class="bor-b-f1f3f5" v-for="item in list">
+							<td class="pl-7 pt-10 pb-10" width="80">
+								<div class="w-58 h-58" :style="'background:url('+item.photoUrl+') center/cover no-repeat'" v-if="item.photoUrl"></div>
+								<div class="w-58 h-58" style="background:url(static/img/list_ico16.jpg) center/cover no-repeat" v-else></div>
+							</td>
+							<td class=" f-12 c-333"><span class="inline-block w-170 l-h15">{{item.title}}</span></td>
+							<td class=" f-12 c-999 center">{{item.createTime}}</td>
+							<td class=" f-16 c-e42008 center f-arial" v-if="item.flow==1">+{{item.point}}</td>
+							<td class=" f-16 co26c043 center f-arial" v-if="item.flow==-1">-{{item.point}}</td>
+
+						</tr>
+					</table>
+				</div>
+				<div class="nolist pb60" v-if="total<=0 && list">
+					<img src="static/img/no.png" alt="">
+					<div>暂无数据</div>
+				</div>
+				<div class="pt-50 pb-50 pr-45 right">
+					<el-pagination v-if="total>0"
+								   next-text="下一页>>"
+								   prev-text="<<上一页"
+								   layout="prev, pager, next"
+								   @current-change="handleCurrentChange"
+								   :current-page.sync="pageNo"
+								   :page-size="limit"
+								   :total="total">
+					</el-pagination>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_integral.js"></script>
+</body>
+</html>

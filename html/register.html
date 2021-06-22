@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="content-language" content="zh-CN"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn"/>
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body class="bgfff">
+	<div id="app" v-cloak="" class="login">
+		<div class="w-980 auto f-cb pt-15 pb-12">
+			<a href="index.html" target="_blank"><img src="static/img/logo.png" alt="" class="fl "></a>
+			<div class="f-24 c-999 fl h-76 lh-76 ml-30">欢迎登录</div>
+		</div>
+		<div class="por">
+			<div class="banner por f-over min-1200 w-100b">
+				<!-- Swiper -->
+				<div class="swiper-container h-560">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide h-560" style="background:url(static/img/center-img35.jpg) center no-repeat"></div>
+						<div class="swiper-slide h-560" style="background:url(static/img/center-img36.jpg) center no-repeat"></div>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<div class="w-347  bg-fff abs r-50b index-10 mr--445 t-57 pb30">
+					<div class=" f-cb pt-30 pb-20 bor-b-f2f4f6 f-18 c-333 l-h15  pl-20">
+						{{type==1?'欢迎加入我们 ——':'绑定手机号'}}
+					</div>
+
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) 3px -126px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="text" placeholder="请输入手机号码" class="h-36 pd15 w100" v-model="phone">
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -36px -158px no-repeat"></div>
+						<div class="w-254 fr el-input fsize12">
+							<input type="text" placeholder="请输入验证码密码" class="h-36 pd15 fl wid150 bor-r-e1e3e5" v-model="smsCode">
+							<div class="fr w-100 center lh36 cursor coe42008" id="code" @click="sendSms">获取验证码</div>
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15" v-if="type==1">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -37px -130px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="password" placeholder="请输入密码" class="h-36 pd15 w100" v-model="password">
+						</div>
+					</div>
+					<div class="f-cb w-292 h-38 bor-e1e3e5 auto mt-15" v-if="type==1">
+						<div class="w-36 h-36 bor-r-e1e3e5 fl" style="background:#f6f6f6 url(static/img/center-img22.png) -37px -130px no-repeat"></div>
+						<div class="w-254 fr el-input">
+							<input type="password" placeholder="请再次确认输入密码" class="h-36 pd15 w100" v-model="qwdpassword">
+						</div>
+					</div>
+					
+					<div class="mt-10 w-292 auto">
+						<div class="fsize12 co66 lh-20" v-if="type==1"><el-checkbox v-model="checked" class="f-12">阅读并同意平台协议</el-checkbox><a href="agreement.html?id=49" class="coe42008">《平台服务协议》</a><a href="agreement.html?id=50" class="coe42008">《交易规则》</a></div>
+						<div class="f-14 c-fff center bg-e42008  h-40 lh-40 mt-20 cursor" @click="register" v-if="type==1">立即注册</div>
+						<div class="f-14 c-fff center bg-e42008  h-40 lh-40 mt-20 cursor" @click="bindPhone" v-else>立即绑定</div>
+
+						<div class="center f-12 c-999 mt-20 ">已有账号？<a href="login.html" class="c-2288ee">注册登录</a></div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		<my-footer></my-footer>
+
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/components/login_footer.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/js/register.js"></script>
+</body>
+</html>

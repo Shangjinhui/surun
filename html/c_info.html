@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a target="_blank" href="index.html" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">消息中心</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff pt-40 pl-35 pr-35 pb-50">
+				<div class="c-333 f-30 l-h14 center mb-5">{{info.title}}</div>
+				<div class="f-12 c-999 l-h15 center mb-15">{{info.createTime}}</div>
+				<div class="f-14 c-666 lh-25 pt-15 bor-t-f1f3f5 bor-b-f1f3f5 pb-60 mb-15" v-html="info.content"></div>
+				<!-- <div class="f-cb">
+					<div class="fl w-700 f-14 c-666 lh-20">
+						<div class="">上一偏：无</div>
+						<div class="">下一篇：关于平台公告升级</div>
+					</div>
+					<a href="c_information.html?id=2" class="fr f-14 c-666 block lh-20 pl-23" style="background:url(static/img/center-img22.png) -37px -27px no-repeat">返回列表</a>
+				</div> -->
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_info.js"></script>
+</body>
+</html>

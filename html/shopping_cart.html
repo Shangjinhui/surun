@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="widdiv=device-widdiv,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="audivor" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<div class="bgfff header h110">
+			<div class="f-cb wid1190">
+				<a href="index.html"><img src="static/img/logo.png" class="fl mt15 ml50 mr30"></a>
+				<div class="fl fsize24 co99 lh110">购物车</div>
+				<div class="fr mt35">
+					<div class="pb5" @mouseleave="iptblur">
+						<div class="rel fsize12 header-seach brad20 wid510 mb5">
+							<div class="lh20 wid70 abs bor-ri center co66 left-0 top-cen">
+								<div class="cursor">{{options[type-1].label}} <img src="static/img/head_ico1.png"  class="vertical2"></div>
+								<div class="w100 abs opa0 top-0 left-0">
+									<el-select v-model="type" placeholder="请选择"><el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option></el-select>
+								</div>
+							</div>
+							<input type="text" autocomplete="off" id="search" placeholder="试一下您心动的关键字吧" @keyup.enter="search" v-model="searchTx" @focus="iptfocus" class="h35 pl88 pr80 fsize12 brad20 w100 header-seach-ipt">
+							<div class="abs cofff bge42008 brad20 top-0 right-0 center wid70 lh35 fsize16 cursor" @click="search">搜索</div>
+							<div class="abs header-seach-text brad4  pt10 pb10" v-if="focusShow&&searchList.length>0"><div v-for="(item,index) in searchList" class="pd15 cursor row1" @click="searchTx=item.name;search()" :class="index==0?'on':'co999'">{{item.name}}</div></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wid1190 pb75">
+			<div class="fsize16 bold pt35 pb20">我的购物车 <span class="coe42008">{{count}}</span></div>
+			<div class="cart-box bgfff mb25">
+				<div class="lh50 f-cb">
+					<div class="fl wid60 pl20">
+						<img src="static/img/list_ico6.png" class="vertical-5 cursor" @click="all_checkeds" v-if="all_checked">
+						<img src="static/img/list_ico4.png" class="vertical-5 cursor" @click="all_checkeds" v-else>
+					</div>
+					<div class="fl wid110 pl20">全选</div>
+					<div class="fl wid290 pl30 mr30">商品信息</div>
+					<div class="fl wid200 pl30 mr30">规格</div>
+					<div class="fl wid120">单价(元)</div>
+					<div class="fl wid120 center">数量</div>
+					<div class="fl wid120 center mr10">金额</div>
+					<div class="fl">操作</div>
+				</div>
+				<div class="fsize12 co66" v-for="(item,index) in list">
+					<div class="f-cb pl20 lh20 pt10 pb10 bor-bof2f4f6">
+						<img src="static/img/list_ico6.png" @click="Single_list_checked(index)" class="fl mr10 cursor" v-if="item.checked">
+						<img src="static/img/list_ico4.png" @click="Single_list_checked(index)" class="fl mr10 vertical-5 cursor" v-else>
+						<a class="fl mr10" target="_blank" :href="'store.html?company='+item.companyId">店铺：{{item.companyName}}</a>
+						<img src="static/img/list_ico7.png" class="fl mr10">
+						<div class="fl rel ico1 cursor" v-if="item.hasCoupon==1" @click="Coupon_lists(item.companyId)"><img src="static/img/list_ico9.png" class="abs"></div>
+					</div>
+					<div class="lh20 f-cb cart-con pt20 pb20 bor-bof2f4f6" v-for="(it,ind) in item.goodsList">
+						<div class="fl wid60 pl30 h20" v-if="it.status==1"> <!--  商品是否有效，0否，1是 -->
+							<img src="static/img/list_ico4.png" @click="Commodity_checked(index,ind)" class="vertical-5 cursor" v-if="!it.checked">
+							<img src="static/img/list_ico6.png" @click="Commodity_checked(index,ind)" class="fl mr10 cursor" v-if="it.checked">
+						</div>
+						<div class="fl wid60 pl15" v-else> <!-- pl15 失效 -->
+							<span class="failico co99 center">失效</span>
+						</div>
+						<div class="fl wid110 cursor" @click="goInfo(it)"><img :src="it.thumb" class="img-cover bor bor-cof4f4f4 img"></div>
+						<div class="fl wid290 mr30 cursor" @click="goInfo(it)">{{it.goodsName}}</div>
+						<div class="fl wid200 co99 mr30"><div>{{it.goodsAttr}}</div>
+						<div v-if="it.goodsAttribute"><span v-for="itattr in it.goodsAttribute" class="mr10">{{itattr.name}}:{{itattr.totalNumber}}</span></div>
+						</div>
+						<div class="fl wid120 co33">￥{{it.price}}</div>
+						<div class="fl wid120 center">
+							<div class="ipt-num on f-cb co66 in-block cat-number">
+								<span class="fl h16 wid16 bgicon1 bgicon" @click="Reduce(index,ind,it.quantity)"><i class="el-icon-minus"></i></span>
+								<input type="tel" value="1" class="fl center wid53 h28" v-model="it.quantity" min="1" max="999999" onkeyup="carNum($(this))" @change="Single_price(index,ind)">
+								<span class="fl h16 wid16 bgicon2 bgicon" @click="Increase(index,ind,it.quantity)"><i class="el-icon-plus"></i></span>
+							</div>
+						</div>
+						<div class="fl wid120 coe42008 center mr10">￥{{it.totalPrice}}</div>
+						<div class="fl">
+							<div class="cursor hover333" @click="Add_collect(index,ind,it.goodsId)" v-if="it.isCollect==0">移入收藏夹 </div>
+							<div class="cursor hover333" @click="UnICollect(index,ind,it.goodsId)" v-else>移出收藏夹 </div>
+							<div class="cursor hover333" @click="Del_cart_state(it.id)">删除</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="f-cb fsize12 lh50 cart-bot" v-if="list&&list.length>0">
+				<div class="fl wid60 pl20">
+					<img src="static/img/list_ico6.png" class="vertical-5 cursor" @click="all_checkeds" v-if="all_checked">
+					<img src="static/img/list_ico4.png" class="vertical-5 cursor" @click="all_checkeds" v-else>
+				</div>
+				<div class="fl wid110 pl20">全选</div>
+				<div class="fl cursor co66 mr40" @click="Del_cart_all_state">删除选中商品</div>
+				<div class="fl cursor co66" @click="collection_all">移入收藏夹</div>
+				<div href="store_confirm.html" class="fr cofff bge42008 fsize18 center cursor wid120 pt5 pb5 ml20" @click="Submit">结算</div>
+				<div class="fr lh20 pt10 right">
+					<div>总价(不含运费)：<span class="fsize18 coe42008">¥{{money}}</span></div>
+					<div class="co99">合计（以结算为准）</div>
+				</div>
+				<div class="fr fsize14 mr40">已选商品 <span class="coe42008">{{quantity}}</span> 件</div>
+			</div>
+
+			<div class="nolist" v-if="list.length<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+		</div>
+		<div class="back-black" :class="coupon_state?'back-black-show':''">
+			<div class="back-black-bg"></div>
+			<div class="back-black-con pro-top-tx answer-back">
+				<img src="static/img/list_ico11.png" class="back-black-btn" @click="Coupon_states">
+				<div class="back-black-tit">优惠券</div>
+				<div class="pb25 pt30 pro-top-tx">
+					<div class="pro-top-fr f-cb lh30 mar-cen mb10" v-for="(item,index) in coupon_list">
+						<span class="list-ico ico1 center mr10 coe42008 fl mt5">优惠券</span>
+						<span class="mr20 fl">{{item.price}}元优惠券  <span v-if="item.condition==0">无门槛劵</span><span v-else>满{{item.condition}}元可用</span></span>
+						<span class="cursor co0679da fr" v-if="item.status==0" @click="Receive_coupon(index,item.id)">立即领取</span>
+						<span class="cursor co0679da fr" v-else>已领取</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/shopping_cart.js"></script>
+
+</body>
+
+</html>

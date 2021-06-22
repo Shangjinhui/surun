@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a href="index.html" class="c-999 mr-5 c-hover">首页</a>><a href="center.html" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">我的银行卡</a></div>
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff">
+				<div class="h-60 lh-60 pl-35 f-14 c-333 por title bor-b-f1f3f5 mb-35"><span v-if="num==1">我的银行卡</span><span v-else>添加银行卡</span></div>
+				<!-- //银行卡列表 -->
+				<div class="f-cb pb-100 pl-45"  v-if="num==1">
+					<div class="fl bor-e1e3e5 w-280 h-112 mr-20 mb-20" v-for="item in 5">
+						<div class="f-cb pt-14 pb-13 pl-10">
+							<div class="w-138 h-46 fl" style="background:url(static/img/center-img30.jpg)"></div>
+							<div class="fr h-46 lh-46 mr-13">****  9926</div>
+						</div>
+						<div class="f-cb bor-t-e1e3e5 h-36 lh-36 center bg-fcfcfd f-12 c-666">
+							<div class="fl w-50b bor-r-e1e3e5 c-e42008 pointer">明细</div>
+							<div class="fr w-50b pointer" @click="deleteCark()">删除</div> 
+						</div>
+					</div>
+					<div class="fl block bor-e1e3e5 pointer w-280 h-112 mr-20 mb-20 bg-fcfcfd" @click="num=2">
+						<div class="w-27 auto h-27 mt-27" style="background:url(static/img/center-img22.png) 0 -95px no-repeat"></div>
+						<div class="center f-12 c-999 l-h12 mt-17">添加银行卡</div>
+					</div>
+				</div>
+				<!-- //添加银行卡 -->
+				<div class="f-cb  f-12 pb-40" v-else>
+					<div class="f-cb mb-10">
+						<div class="fl h-34 lh-34 f-14 c-666 w-120 right mr-30"><span class="c-e42008 mr-5">*</span>用户姓名</div>
+						<div class="fl h-34 lh-32 mr-40 w-256">
+							<el-input v-model="name" class="c-h-input" placeholder="请输入用户姓名"></el-input>
+						</div>
+						<span class="inline-block lh-34 f-14 c-666 pl-25" style="background:url(static/img/center-img22.png) -180px 6px no-repeat">用户名不能为空</span>
+					</div>
+					<div class="f-cb mb-10">
+						<div class="fl h-34 lh-34 f-14 c-666 w-120 right mr-30"><span class="c-e42008 mr-5">*</span>证件号</div>
+						<div class="fl h-34 lh-32 mr-40 w-256">
+							<el-input v-model="name" class="c-h-input" placeholder="请输入身份证号码，末尾是X必须大写"></el-input>
+						</div>
+						<span class="inline-block lh-34 f-14 c-666 pl-25" style="background:url(static/img/center-img22.png) -180px 6px no-repeat">证件号不能为空</span>
+					</div>
+					<div class="f-cb mb-10">
+						<div class="fl h-34 lh-34 f-14 c-666 w-120 right mr-30">银行</div>
+						<div class="fl h-34 lh-32 mr-40 w-256">
+							<template>
+							  <el-select v-model="value" class="c-h-select" placeholder="请选择">
+							    <el-option
+							      v-for="item in options"
+							      :key="item.value"
+							      :label="item.label"
+							      :value="item.value">
+							    </el-option>
+							  </el-select>
+							</template>
+						</div>
+						<span class="inline-block lh-34 f-14 c-666 pl-25" style="background:url(static/img/center-img22.png) -180px 6px no-repeat">银行卡不能为空</span>
+					</div>
+					<div class="f-cb mb-10">
+						<div class="fl h-34 lh-34 f-14 c-666 w-120 right mr-30"><span class="c-e42008 mr-5">*</span>银行卡号</div>
+						<div class="fl h-34 lh-32 mr-40 w-256">
+							<el-input v-model="name" class="c-h-input" placeholder="请输入银行卡号"></el-input>
+						</div>
+						<span class="inline-block lh-34 f-14 c-666 pl-25" style="background:url(static/img/center-img22.png) -180px 6px no-repeat">银行卡号不能为空</span>
+					</div>
+					<div class="f-cb mb-35">
+						<div class="fl h-34 lh-34 f-14 c-666 w-120 right mr-30">手机号</div>
+						<div class="fl h-34 lh-32 mr-40 w-256">
+							<el-input v-model="name" class="c-h-input" placeholder="请输入手机号"></el-input>
+						</div>
+						<span class="inline-block lh-34 f-14 c-666 pl-25" style="background:url(static/img/center-img22.png) -180px 6px no-repeat">手机号不能为空</span>
+					</div>
+					<div class="f-14 ml-150 c-fff pointer w-130 h-38 lh-38 center bg-e42008">提交</div>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_bank_card.js"></script>
+</body>
+</html>

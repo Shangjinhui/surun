@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/center.css">
+</head>
+<body>
+	<div id="app" v-cloak="" class="center-page">
+		<header-top></header-top>
+		<div class="h-60 lh-60 bg-e42008">
+			<div class="w-1190 happyzcool c-fff f-28">我的苏润</div>
+		</div>
+		<div class="crumbs w-1190 pt-20 pb-22 f-12 c-999"><a href="index.html" target="_blank" class="c-999 mr-5 c-hover">首页</a>><a href="center.html"  target="_blank" class="c-999 mr-5 ml-5 c-hover">个人中心</a>><a href="javascript:;" class="c-999 ml-5 c-hover">我的优惠券</a></div>  
+		<div class="warp f-cb w-1190 mb-55">
+			<center-nav :nav="nav"></center-nav>
+			<div class="w-954 shadow fr bg-fff ">
+				<div class="h-60 lh-60 pl-35 f-14 c-666 por bor-b-f1f3f5 mb-35 c-666">
+					<div class="fl mr-50 por tit pointer" :class="type =='' ? 'on':''" @click="type='';pageNo=1;getList()">全部</div>
+					<div class="fl mr-50 por tit pointer" :class="type ==1 ? 'on':''" @click="type=1;pageNo=1;getList()">待使用<span v-if="info.noUseNumber>0">(<i class="c-e42008">{{info.noUseNumber}}</i>)</span></div>
+					<div class="fl mr-50 por tit pointer" :class="type ==2 ? 'on':''" @click="type=2;pageNo=1;getList()">已使用 <span v-if="info.useNumber>0">(<i class="c-e42008">{{info.useNumber}}</i>)</span></div>
+					<div class="fl mr-50 por tit pointer" :class="type ==3 ? 'on':''" @click="type=3;pageNo=1;getList()">已失效</div>
+				</div>
+				<div class="f-cb pl-35 min200">
+					<div @click="goList(item)" class="fl cursor w-275 h-86 b-radio-4 bg-fff shadow-6 mr-25 mb-20 f-over" v-for="item in list">
+						<div class="fl pl-15 pt-15">
+							<div class="fl w-55 h-55  mr-10" :style="'background:url('+item.thumb+') center/cover no-repeat'" v-if="item.thumb"></div>
+							<div class="fl w-55 h-55  mr-10" style="background:url(static/img/list_ico15.jpg) center/cover no-repeat" v-else></div>
+							<div class="fl pt-7">
+								<div class=" c999 h-20 lh-20 f-cb mb-5 f-12" v-if="item.status==3">¥ <span class="f-21  mr-5 " >{{item.price}}</span></div>
+								<div class=" c-D94037 h-20 lh-20 f-cb mb-5 f-12" v-else>¥ <span class="f-21  mr-5" >{{item.price}}</span></div>
+								<div class="f-12 c-333 l-h15" :class="item.status ==3 ? 'c999':''" v-if="item.condition>0">满{{item.condition}}元可用</div>
+								<div class="f-12 c-333 l-h15" :class="item.status ==3 ? 'c999':''" v-if="item.condition==0">无门槛</div>
+
+							</div>
+						</div>
+						<div class="fr h-86 w-41 center h-center f-14 c-fff" :class="[{'red':item.status==1},{'black':item.status==2},{'gray':item.status==3}]">
+							<span class="inline-block w-16 l-h12" v-if="item.status==1">立即使用</span>
+							<span class="inline-block w-16 l-h12" v-else-if="item.status==2">已使用</span>
+							<span class="inline-block w-16 l-h12 " v-else>已失效</span>
+						</div>
+					</div>
+					<div class="nolist" v-if="total<=0 && list">
+						<img src="static/img/no.png" alt="">
+						<div>暂无数据</div>
+					</div>
+				</div>
+
+
+				<div class="pt-50 pb-50 pr-45 right">
+					<el-pagination v-if="total>0"
+								   next-text="下一页>>"
+								   prev-text="<<上一页"
+								   layout="prev, pager, next"
+								   @current-change="handleCurrentChange"
+								   :current-page.sync="pageNo"
+								   :page-size="limit"
+								   :total="total">
+					</el-pagination>
+				</div>
+			</div>
+		</div>
+		<my-footer></my-footer>
+	</div>
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/components/center.js"></script>
+	<script src="static/js/c_coupons.js"></script>
+</body>
+</html>

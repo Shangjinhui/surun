@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta http-equiv="content-language" content="zh-CN"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="keywords" content=""/>
+	<meta name="description" content=""/>
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn"/>
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+<body class="bgf2f4f6">
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<!-- <header-finds header-type="5" :header-list="category" :header-all-list="categoryAll" :type="type"></header-finds> -->
+		<div class="header bgfff">
+				<div class="wid1190 header-cen">
+					<div class="f-cb ">
+					<a href="index.html"><img src="static/img/logo.png" class="fl mt15 ml15 mr30"></a>
+					<div class="fl fsize24 co99 lh100">积分商城</div>
+					<div class="fl  ml60 mt35">
+						<div class="pb5">
+							<div class="rel fsize12 header-seach brad20 wid510 ">
+								<input type="text" autocomplete="off" id="search" v-model="searchTx" placeholder="试一下您心动的关键字吧" class="h35 pl20 pr80 fsize12 brad20 w100 header-seach-ipt">
+								<div class="abs cofff bge42008 brad20 top-0 right-0 center wid70 lh35 fsize16 cursor" @click="getList">搜索</div>
+								<!-- <div class="abs header-seach-text brad4  pt10 pb10" v-if="focusShow&&searchList"><div v-for="(item,index) in searchList" @click="searchTx=item.name;search()" class="pd15 cursor row1" :class="index==0?\'on\':\'co999\'">{{item.name}}</div></div> -->
+							</div>
+						</div>
+			 		</div>
+					<div class="fr brad20 bor lh36 pr12 pl25 mt35 mr40 f-cb cursor" @click="carlist">
+						<img src="static/img/head_ico3.png"  class="vertical-4 mr5">购物车
+						<span class="bge42008 cofff brad20 ml12 fr lh20 mt8 pl5 pr5">{{cartNum}}</span>
+					</div>
+				</div>
+				<div class="f-cb">
+					<div class="fl header-nav lh40 wid1120 rel " :class="slideState?'':'h40 ovh'">
+						<div @click="goLists(-1)" class="fl wid160 bge42008 cursor center cofff mr30">为你推荐</div>
+						<div @click="goLists(item)" class="fl  mr30 rel header-nav-item  hovere42008 cursor" :class="type==item.id?'coe42008':''" v-for="item in category">{{item.name}}</div>
+					</div>
+					<div class="fr pr20 lh40 arr-top cursor text-none" v-if="isMore" :class="slideState?'on':''" @click="navState">更多</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wid1190 pb75 pt25">
+			<div class="banner rel mb25">
+				<div class="swiper-container swiper1">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide" v-for="item in bannerList">
+							<a target="_blank" :href="item.link">
+								<img :src="item.photoUrl" class="ovh img-cover w100 h310 block">
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="swiper-pagination swiper-pagination1 brad20"></div>
+			</div>
+
+			<div class="f-cb ">
+				<a target="_blank" :href="'points_pro.html?id='+item.id" class="fl fsize12 bgfff pb15 pl10 pr10 pt10 bor-bo bor-ri bor-cof4f4f4 co66 hovere42008 home-pro rel" v-for="(item,index) in list">
+					<img :src="item.photoUrl" class="img-cover mar-cen mb20 w100 h115 block">
+					<div class="coe42008  f-cb lh20"><span class="fsize18 bold">{{item.price}}</span>积分
+						<div class="fr co99">剩余{{item.stock}}个</div>
+					</div>
+					<div class=" row2  lh24 h45 fsize14">{{item.name}}</div>
+				</a>
+			</div>
+
+			<div class="nolist" v-if="total<=0 && list">
+				<img src="static/img/no.png" alt="">
+				<div>暂无数据</div>
+			</div>
+
+			<el-pagination v-if="total>0"
+					class="center mt30"
+					next-text="下一页>>"
+					prev-text="<<上一页"
+					layout="prev, pager, next"
+					@current-change="handleCurrentChange"
+					:current-page.sync="pageNo"
+					:page-size="limit"
+					:total="total">
+			</el-pagination>
+
+		</div>
+
+
+
+		<my-footer></my-footer>
+
+	</div>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/points_mall.js"></script>
+
+</body>
+
+</html>

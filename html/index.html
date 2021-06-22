@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-language" content="zh-CN" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<!--<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />-->
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="author" content="杭州博采网络科技股份有限公司-http://www.bocweb.cn" />
+	<meta name="renderer" content="webkit">
+	<title>苏润易购</title>
+	<link href="static/img/favicon.ico" rel="shortcut icon">
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@2.2.2/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="static/public/swiper/swiper-3.4.2.min.css">
+	<link rel="stylesheet" href="static/public/css/public.css">
+	<link rel="stylesheet" href="static/css/index.css">
+</head>
+
+<body>
+	<div id="app" v-cloak="">
+		<!--<my-header ></my-header>-->
+		<header-top></header-top>
+		<header-home nav-show="true"></header-home>
+
+		<div class="banner rel">
+			<div class="swiper-container swiper1">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="item in banner">
+						<a :href="item.link" target="_blank" v-if="item.type==1">
+							<img :src="item.photo.url" class="ovh img-cover w100 h400 block">
+						</a>
+						<a :href="'store_pro.html?id='+item.link+'&company='+item.company" target="_blank" v-if="item.type==2">
+							<img :src="item.photo.url" class="ovh img-cover w100 h400 block">
+						</a>
+						<a :href="'about.html?type=2&id='+item.id" target="_blank" v-if="item.type==3">
+							<img :src="item.photo.url" class="ovh img-cover w100 h400 block">
+						</a>
+						<a href="javascript:;" target="_blank" v-if="item.type==0">
+							<img :src="item.photo.url" class="ovh img-cover w100 h400 block">
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="swiper-pagination swiper-pagination1 brad20"></div>
+		</div>
+
+		<div class="bgf4f4f4 pt35 pb50">
+			<div class="wid1190">
+				<!--拼团定制-->
+				<div class="f-cb mb30">
+					<a href="group_list.html" target="_blank"><img src="static/img/home_img1.jpg" class="fl wid198 h260"></a>
+					<a :href="'store_pro.html?id='+item.id+'&company='+item.companyId"  target="_blank" class="fl fsize12 wid198 bgfff h260  pl10 pr10 pt10 bor-bo bor-cof4f4f4 co66 hovere42008 home-group rel" v-for="(item,index) in ping">
+						<img :src="item.thumb.url" class="img-cover mar-cen mb10 wid180 h160">
+						<div class=" row1 mb10">{{item.name}}</div>
+						<div class="cofa4f48 mb15">¥<span class="fsize16 bold">{{item.originPrice}}</span> <span class="ml5 text-line co99">¥{{item.price}}</span></div>
+						<!--<div class="co99 f-cb"><div class="fl home-group-line rel"><span class="abs left-0 top-0"></span></div>已拼20%</div>-->
+						<div class="co99">{{item.saleCount}}人下单</div>
+						<img src="static/img/home_line1.png" v-if="index!=4&&index!=10" class="abs line">
+					</a>
+				</div>
+
+				<div class="f-cb home-link mb30">
+					<a :href="'store.html?company='+item.id"  target="_blank" class="fl pt10 pb10 pr10 pl10 home-link-item bgfff bor-bo bor-ri bor-cof4f4f4" v-for="item in company">
+						<img :src="item.logo.url" class="img-cover block wid98 h80">
+					</a>
+					<div class="fl pt10 pb10 pr10 pl10 home-link-item bgfff" v-if="status_btn">
+						<img @click="Replace" src="static/img/home_img3.jpg" class="img-contain block w100">
+					</div>
+				</div>
+
+				<div class="f-cb mb30">
+					<div class="fl bgfff wid290 pt20 pl20 pr20 h340 mr10">
+						<div class="f-cb fsize24 lh24 mb15">领券中心 <a href="coupon_list.html" target="_blank" class="fr co99 fsize12 hoverred">更多 	<img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a></div>
+						<div class="bgf8f8f8 f-cb voucher pt10 pl5 pr50 pb10 fsize12 mb10 brad4 rel" v-for="item in coupon">
+							<img :src="item.thumb.url?item.thumb.url:'static/img/list_ico15.jpg'" class="img-cover fl voucher-img mr5">
+							<div class="fl wid130">
+								<div class="coe42008 mb10 pt10">¥<span class="fsize20">{{item.price}}</span><span class="bgf2e5e4 ml5 pl5 pr5" v-if="item.condition>0">满{{item.condition}}元可用</span></div>
+								<div class="row1" v-if="item.condition==0">无门槛</div>
+							</div>
+							<div class="voucher-fr cursor" @click="ReceiveCoupon(item.id)">立即领取</div>
+						</div>
+					</div>
+					<div class="fl bgfff wid290 pt20 pl20 pr20 h340 mr10 find">
+						<div class="f-cb fsize24 lh24 mb15">发现 <a href="find_list.html" target="_blank" class="fr co99 fsize12 hoverred">更多 	<img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a></div>
+						<div class="swiper-container swiper2">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" v-for="item in discovery">
+									<a class="center hovere42008" :href="'find_info.html?id='+item.id" target="_blank">
+										<div class="f-cb find-img">
+											<img v-if="item.photo[0]" :src="item.photo[0].url" class="img-cover fl  ">
+											<div class="fl">
+												<img v-if="item.photo[1]" :src="item.photo[1].url" class="img-cover block">
+												<img v-if="item.photo[2]" :src="item.photo[2].url" class="img-cover block">
+											</div>
+										</div>
+										<div class="row1 mb5 mt20">{{item.title}}</div>
+										<div class="row1 fsize12 co99" v-html="item.content"></div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-pagination swiper-pagination2 mt20"></div>
+					</div>
+					<div class="fl bgfff wid290 pt20 pl20 pr20 h340 mr10 ">
+						<div class="f-cb fsize24 lh24 mb15">新品首发 <a href="new_list.html"  target="_blank" class="fr co99 fsize12 hoverred">更多 	<img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a></div>
+						<div class="f-cb">
+							<a :href="'store_pro.html?id='+item.id+'&company='+item.companyId"  target="_blank" class="fl home-new bor-cof4f4f4 hovere42008" :class="[{'bor-ri':index%2!=1,'bor-bo':index<2}]" v-for="(item,index) in news">
+								<img :src="item.thumb.url" class="img-cover mb5 w100">
+								<div class="row1 ">{{item.name}}</div>
+							</a>
+						</div>
+					</div>
+					<div class="fl bgfff wid290 pt20 pl20 pr20 h340  find">
+						<div class="f-cb fsize24 lh24 mb15">排行榜 <div class="fr co99 fsize12 home-fr wid160">
+							<a :href="'ranking_list.html?id='+item.id"  target="_blank" class="cursor" v-bind:class="{mr10:index<2,on:index==0}" v-if="index<3" v-for="(item,index) in ranking" >{{item.name}}</a>
+							<a href="ranking_list.html"  target="_blank" class="fr"><img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a></div></div>
+						<div class="swiper-container swiper3">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide" v-for="(item,index) in ranking_list">
+									<a :href="'store_pro.html?id='+it.id+'&company='+it.companyId"  target="_blank" class="f-cb block hovere42008" :class="[{mb15:ind<2}]" v-for="(it,ind) in item">
+										<img src="static/img/home_img7.jpg" class="fl mr15 mt15" v-if="index==0 && ind==0">
+										<img src="static/img/img1.jpg" class="fl mr15 mt15" v-if="index==0 && ind==1">
+										<img src="static/img/img2.jpg" class="fl mr15 mt15" v-if="index==0 && ind==2">
+										<img v-if="it.thumb" :src="it.thumb.url" class="img-cover fl wid70 h70">
+										<div class="row2 fr wid130 lh24 h45 mt10" :class="{wid167:index!=0}">{{it.name}}</div>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="swiper-pagination swiper-pagination3 "></div>
+					</div>
+				</div>
+
+				<div class="home-tit center fsize24 lh30 mb15 rel">人气好货
+					<a href="product_list.html"  target="_blank" class="abs right-0 co99 fsize12">更多 	<img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a>
+				</div>
+				<div class="f-cb mb40">
+					<a :href="'store_pro.html?id='+item.id+'&company='+item.companyId"  target="_blank" class="fl fsize12  bgfff   bor-bo bor-ri bor-cof4f4f4  home-pro rel" v-for="(item,index) in good">
+						<img :src="item.thumb.url" class="img-cover mar-cen mb10 w100 block h160">
+						<div class="co66 row2 mb10 lh24 h45 fsize14 hovere42008">{{item.name}}</div>
+						<div class="coff2e58  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+					</a>
+				</div>
+
+				<div class="home-tit center fsize24 lh30 mb15 rel">猜你喜欢
+					<a href="product_list.html"  target="_blank" class="abs right-0 co99 fsize12">更多 	<img src="static/img/cla_ico11.png" class="wid10 vertical-2"></a>
+				</div>
+
+				<div class="f-cb ">
+					<a :href="'store_pro.html?id='+item.id+'&company='+item.companyId"  target="_blank" class="fl fsize12  bgfff   bor-bo bor-ri bor-cof4f4f4  home-pro rel" v-for="(item,index) in like">
+						<img :src="item.thumb.url" class="img-cover mar-cen mb10 w100 block h160">
+						<div class="co66 row2 mb10 lh24 h45 fsize14 hovere42008">{{item.name}}</div>
+						<div class="coff2e58  f-cb lh20">¥<span class="fsize18 bold">{{item.price}}</span> <div class="fr co99">{{item.saleCount}}人下单</div></div>
+					</a>
+				</div>
+
+			</div>
+		</div>
+
+
+		<my-footer></my-footer>
+
+		<fixed-top></fixed-top>
+
+	</div>
+
+	<!--客服-->
+
+	<script>
+	(function (w, d, n, a, j) {
+		w[n] = w[n] || function () {
+				(w[n].a = w[n].a || []).push(arguments)
+			};
+		j = d.createElement('script');
+		j.async = true;
+		j.src ='https://qiyukf.com/script/30ffc88b1c383c73b203c278524db369.js?hidden=1';
+		d.body.appendChild(j);
+	})(window, document, 'ysf');
+
+	</script>
+
+	<script src="static/public/swiper/swiper-3.4.2.min.js"></script>
+	<script src="static/public/js/dist.js"></script>
+	<script src="static/public/element/index.js"></script>
+	<script src="static/public/js/public.js"></script>
+	<script src="static/public/js/c_main.js"></script>
+	<script src="static/components/footer.js"></script>
+	<script src="static/components/header.js"></script>
+	<script src="static/js/index.js"></script>
+
+
+</body>
+
+</html>
